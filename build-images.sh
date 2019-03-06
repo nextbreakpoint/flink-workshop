@@ -2,58 +2,58 @@
 
 . variables.sh
 
-eval $(docker-machine env demo-manager)
+eval $(docker-machine env workshop-manager)
 
-docker build -t demo-zookeeper:$ZOOKEEPER_VERSION --build-arg zookeeper_version=$ZOOKEEPER_VERSION docker/zookeeper
-docker build -t demo-kafka:$KAFKA_VERSION --build-arg kafka_version=$KAFKA_VERSION --build-arg scala_version=$SCALA_VERSION docker/kafka
-docker build -t demo-flink:$FLINK_VERSION --build-arg flink_version=$FLINK_VERSION --build-arg scala_version=$SCALA_VERSION docker/flink
-docker build -t demo-alertmanager:$STACK_VERSION docker/alertmanager
-docker build -t demo-grafana:$STACK_VERSION docker/grafana
-docker build -t demo-prometheus:$STACK_VERSION docker/prometheus
-docker build -t demo-nodeexporter:$STACK_VERSION docker/nodeexporter
+docker build -t workshop-zookeeper:$ZOOKEEPER_VERSION --build-arg zookeeper_version=$ZOOKEEPER_VERSION docker/zookeeper
+docker build -t workshop-kafka:$KAFKA_VERSION --build-arg kafka_version=$KAFKA_VERSION --build-arg scala_version=$SCALA_VERSION docker/kafka
+docker build -t workshop-flink:$FLINK_VERSION --build-arg flink_version=$FLINK_VERSION --build-arg scala_version=$SCALA_VERSION docker/flink
+docker build -t workshop-alertmanager:$STACK_VERSION docker/alertmanager
+docker build -t workshop-grafana:$STACK_VERSION docker/grafana
+docker build -t workshop-prometheus:$STACK_VERSION docker/prometheus
+docker build -t workshop-nodeexporter:$STACK_VERSION docker/nodeexporter
 
-docker tag demo-zookeeper:$ZOOKEEPER_VERSION $(docker-machine ip demo-manager):5000/demo-zookeeper:$ZOOKEEPER_VERSION
-docker tag demo-kafka:$KAFKA_VERSION $(docker-machine ip demo-manager):5000/demo-kafka:$KAFKA_VERSION
-docker tag demo-flink:$FLINK_VERSION $(docker-machine ip demo-manager):5000/demo-flink:$FLINK_VERSION
-docker tag demo-alertmanager:$STACK_VERSION $(docker-machine ip demo-manager):5000/demo-alertmanager:$STACK_VERSION
-docker tag demo-grafana:$STACK_VERSION $(docker-machine ip demo-manager):5000/demo-grafana:$STACK_VERSION
-docker tag demo-prometheus:$STACK_VERSION $(docker-machine ip demo-manager):5000/demo-prometheus:$STACK_VERSION
-docker tag demo-nodeexporter:$STACK_VERSION $(docker-machine ip demo-manager):5000/demo-nodeexporter:$STACK_VERSION
+docker tag workshop-zookeeper:$ZOOKEEPER_VERSION $(docker-machine ip workshop-manager):5000/workshop-zookeeper:$ZOOKEEPER_VERSION
+docker tag workshop-kafka:$KAFKA_VERSION $(docker-machine ip workshop-manager):5000/workshop-kafka:$KAFKA_VERSION
+docker tag workshop-flink:$FLINK_VERSION $(docker-machine ip workshop-manager):5000/workshop-flink:$FLINK_VERSION
+docker tag workshop-alertmanager:$STACK_VERSION $(docker-machine ip workshop-manager):5000/workshop-alertmanager:$STACK_VERSION
+docker tag workshop-grafana:$STACK_VERSION $(docker-machine ip workshop-manager):5000/workshop-grafana:$STACK_VERSION
+docker tag workshop-prometheus:$STACK_VERSION $(docker-machine ip workshop-manager):5000/workshop-prometheus:$STACK_VERSION
+docker tag workshop-nodeexporter:$STACK_VERSION $(docker-machine ip workshop-manager):5000/workshop-nodeexporter:$STACK_VERSION
 
-docker push $(docker-machine ip demo-manager):5000/demo-zookeeper:$ZOOKEEPER_VERSION
-docker push $(docker-machine ip demo-manager):5000/demo-kafka:$KAFKA_VERSION
-docker push $(docker-machine ip demo-manager):5000/demo-flink:$FLINK_VERSION
-docker push $(docker-machine ip demo-manager):5000/demo-alertmanager:$STACK_VERSION
-docker push $(docker-machine ip demo-manager):5000/demo-grafana:$STACK_VERSION
-docker push $(docker-machine ip demo-manager):5000/demo-prometheus:$STACK_VERSION
-docker push $(docker-machine ip demo-manager):5000/demo-nodeexporter:$STACK_VERSION
+docker push $(docker-machine ip workshop-manager):5000/workshop-zookeeper:$ZOOKEEPER_VERSION
+docker push $(docker-machine ip workshop-manager):5000/workshop-kafka:$KAFKA_VERSION
+docker push $(docker-machine ip workshop-manager):5000/workshop-flink:$FLINK_VERSION
+docker push $(docker-machine ip workshop-manager):5000/workshop-alertmanager:$STACK_VERSION
+docker push $(docker-machine ip workshop-manager):5000/workshop-grafana:$STACK_VERSION
+docker push $(docker-machine ip workshop-manager):5000/workshop-prometheus:$STACK_VERSION
+docker push $(docker-machine ip workshop-manager):5000/workshop-nodeexporter:$STACK_VERSION
 
-eval $(docker-machine env demo-manager)
+eval $(docker-machine env workshop-manager)
 
-docker pull $(docker-machine ip demo-manager):5000/demo-zookeeper:$ZOOKEEPER_VERSION
-docker pull $(docker-machine ip demo-manager):5000/demo-kafka:$KAFKA_VERSION
-docker pull $(docker-machine ip demo-manager):5000/demo-flink:$FLINK_VERSION
-docker pull $(docker-machine ip demo-manager):5000/demo-alertmanager:$STACK_VERSION
-docker pull $(docker-machine ip demo-manager):5000/demo-grafana:$STACK_VERSION
-docker pull $(docker-machine ip demo-manager):5000/demo-prometheus:$STACK_VERSION
-docker pull $(docker-machine ip demo-manager):5000/demo-nodeexporter:$STACK_VERSION
+docker pull $(docker-machine ip workshop-manager):5000/workshop-zookeeper:$ZOOKEEPER_VERSION
+docker pull $(docker-machine ip workshop-manager):5000/workshop-kafka:$KAFKA_VERSION
+docker pull $(docker-machine ip workshop-manager):5000/workshop-flink:$FLINK_VERSION
+docker pull $(docker-machine ip workshop-manager):5000/workshop-alertmanager:$STACK_VERSION
+docker pull $(docker-machine ip workshop-manager):5000/workshop-grafana:$STACK_VERSION
+docker pull $(docker-machine ip workshop-manager):5000/workshop-prometheus:$STACK_VERSION
+docker pull $(docker-machine ip workshop-manager):5000/workshop-nodeexporter:$STACK_VERSION
 
-eval $(docker-machine env demo-worker1)
+eval $(docker-machine env workshop-worker1)
 
-docker pull $(docker-machine ip demo-manager):5000/demo-zookeeper:$ZOOKEEPER_VERSION
-docker pull $(docker-machine ip demo-manager):5000/demo-kafka:$KAFKA_VERSION
-docker pull $(docker-machine ip demo-manager):5000/demo-flink:$FLINK_VERSION
-docker pull $(docker-machine ip demo-manager):5000/demo-alertmanager:$STACK_VERSION
-docker pull $(docker-machine ip demo-manager):5000/demo-grafana:$STACK_VERSION
-docker pull $(docker-machine ip demo-manager):5000/demo-prometheus:$STACK_VERSION
-docker pull $(docker-machine ip demo-manager):5000/demo-nodeexporter:$STACK_VERSION
+docker pull $(docker-machine ip workshop-manager):5000/workshop-zookeeper:$ZOOKEEPER_VERSION
+docker pull $(docker-machine ip workshop-manager):5000/workshop-kafka:$KAFKA_VERSION
+docker pull $(docker-machine ip workshop-manager):5000/workshop-flink:$FLINK_VERSION
+docker pull $(docker-machine ip workshop-manager):5000/workshop-alertmanager:$STACK_VERSION
+docker pull $(docker-machine ip workshop-manager):5000/workshop-grafana:$STACK_VERSION
+docker pull $(docker-machine ip workshop-manager):5000/workshop-prometheus:$STACK_VERSION
+docker pull $(docker-machine ip workshop-manager):5000/workshop-nodeexporter:$STACK_VERSION
 
-eval $(docker-machine env demo-worker2)
+eval $(docker-machine env workshop-worker2)
 
-docker pull $(docker-machine ip demo-manager):5000/demo-zookeeper:$ZOOKEEPER_VERSION
-docker pull $(docker-machine ip demo-manager):5000/demo-kafka:$KAFKA_VERSION
-docker pull $(docker-machine ip demo-manager):5000/demo-flink:$FLINK_VERSION
-docker pull $(docker-machine ip demo-manager):5000/demo-alertmanager:$STACK_VERSION
-docker pull $(docker-machine ip demo-manager):5000/demo-grafana:$STACK_VERSION
-docker pull $(docker-machine ip demo-manager):5000/demo-prometheus:$STACK_VERSION
-docker pull $(docker-machine ip demo-manager):5000/demo-nodeexporter:$STACK_VERSION
+docker pull $(docker-machine ip workshop-manager):5000/workshop-zookeeper:$ZOOKEEPER_VERSION
+docker pull $(docker-machine ip workshop-manager):5000/workshop-kafka:$KAFKA_VERSION
+docker pull $(docker-machine ip workshop-manager):5000/workshop-flink:$FLINK_VERSION
+docker pull $(docker-machine ip workshop-manager):5000/workshop-alertmanager:$STACK_VERSION
+docker pull $(docker-machine ip workshop-manager):5000/workshop-grafana:$STACK_VERSION
+docker pull $(docker-machine ip workshop-manager):5000/workshop-prometheus:$STACK_VERSION
+docker pull $(docker-machine ip workshop-manager):5000/workshop-nodeexporter:$STACK_VERSION

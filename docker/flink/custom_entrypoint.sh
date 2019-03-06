@@ -18,8 +18,6 @@
 # limitations under the License.
 ###############################################################################
 
-cd /
-
 if [ -n "$KEYSTORE_CONTENT" ]; then
   echo "Found keystore content"
   echo $KEYSTORE_CONTENT | base64 -d > /keystore.jks

@@ -24,7 +24,7 @@ public class FlinkUtil {
 
     private FlinkUtil() {}
 
-    public static SourceFunction<SensorMessage> createKafkaSource(ParameterTool parameters, String topicName, KeyedDeserializationSchema schema, String jobGroupId, String autoOffsetReset) {
+    public static SourceFunction<SensorMessage> createKafkaSource(ParameterTool parameters, String topicName, KeyedDeserializationSchema<SensorMessage> schema, String jobGroupId, String autoOffsetReset) {
         final String bootstrapServers = StreamJob.getNonNullableParam(parameters, Constants.BOOTSTRAP_SERVERS);
         final String keystoreLocation = StreamJob.getNullableParam(parameters, Constants.KEYSTORE_LOCATION);
         final String keystorePassword = StreamJob.getNullableParam(parameters, Constants.KEYSTORE_PASSWORD);
@@ -38,7 +38,7 @@ public class FlinkUtil {
         return kafkaConsumer011;
     }
 
-    public static <T> SinkFunction<T> createKafkaSink(ParameterTool parameters, String topicName, KeyedSerializationSchema schema) {
+    public static <T> SinkFunction<T> createKafkaSink(ParameterTool parameters, String topicName, KeyedSerializationSchema<T> schema) {
         final String bootstrapServers = StreamJob.getNonNullableParam(parameters, Constants.BOOTSTRAP_SERVERS);
         final String keystoreLocation = StreamJob.getNullableParam(parameters, Constants.KEYSTORE_LOCATION);
         final String keystorePassword = StreamJob.getNullableParam(parameters, Constants.KEYSTORE_PASSWORD);

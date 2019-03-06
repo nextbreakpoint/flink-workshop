@@ -5,7 +5,6 @@ import org.apache.flink.streaming.api.windowing.time.Time;
 import org.joda.time.DateTime;
 
 public class SensorMessageTimestampExtractor extends BoundedOutOfOrdernessTimestampExtractor<SensorMessage> {
-
     public SensorMessageTimestampExtractor(Time maxOutOfOrderness) {
         super(maxOutOfOrderness);
     }
@@ -14,5 +13,4 @@ public class SensorMessageTimestampExtractor extends BoundedOutOfOrdernessTimest
     public long extractTimestamp(SensorMessage message) {
         return DateTime.parse(message.getTimestamp()).toDate().toInstant().toEpochMilli();
     }
-
 }

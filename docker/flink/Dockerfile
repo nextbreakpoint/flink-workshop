@@ -27,7 +27,6 @@ RUN echo "akka.ask.timeout: 600 s" >> $FLINK_PATH/conf/flink-conf.yaml
 RUN echo "akka.client.timeout: 600 s" >> $FLINK_PATH/conf/flink-conf.yaml
 RUN echo "web.timeout: 600000" >> $FLINK_PATH/conf/flink-conf.yaml
 
-RUN echo "log4j.logger.com.ft.dw=INFO, console" >> $FLINK_PATH/conf/log4j-cli.properties
 RUN echo "log4j.logger.org.apache.flink.client.CliFrontend=INFO, console" >> $FLINK_PATH/conf/log4j-cli.properties
 RUN echo "log4j.logger.org.apache.flink.runtime.rest.RestClient=INFO, console" >> $FLINK_PATH/conf/log4j-cli.properties
 RUN echo "log4j.logger.org.apache.flink.runtime.metrics.MetricRegistryImpl=ERROR" >> $FLINK_PATH/conf/log4j-console.properties
@@ -50,7 +49,7 @@ RUN wget --max-redirect=2 -O $FLINK_PATH/lib/httpcore-4.4.9.jar https://repo1.ma
 RUN wget --max-redirect=2 -O $FLINK_PATH/lib/httpclient-4.5.5.jar https://repo1.maven.org/maven2/org/apache/httpcomponents/httpclient/4.5.5/httpclient-4.5.5.jar
 RUN wget --max-redirect=2 -O $FLINK_PATH/lib/metrics-core-4.0.2.jar https://repo1.maven.org/maven2/io/dropwizard/metrics/metrics-core/4.0.2/metrics-core-4.0.2.jar
 
-RUN wget --max-redirect=2 -O $FLINK_PATH/lib/flink-metrics-graphite-$FLINK_VERSION-jar-with-dependencies.jar https://repo1.maven.org/maven2/org/apache/flink/flink-metrics-graphite/$FLINK_VERSION/flink-metrics-graphite-$FLINK_VERSION-jar-with-dependencies.jar
+RUN wget --max-redirect=2 -O $FLINK_PATH/lib/flink-metrics-graphite-$FLINK_VERSION.jar https://repo1.maven.org/maven2/org/apache/flink/flink-metrics-graphite/$FLINK_VERSION/flink-metrics-graphite-$FLINK_VERSION.jar
 
 RUN chown -R flink.flink $FLINK_PATH/lib
 

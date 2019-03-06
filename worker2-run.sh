@@ -2,6 +2,6 @@
 
 . variables.sh
 
-eval $(docker-machine env demo-worker2)
+eval $(docker-machine env workshop-worker2)
 
 $@

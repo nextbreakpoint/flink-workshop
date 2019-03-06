@@ -11,21 +11,22 @@ services:
         - --timeout=300
         - --
         - /custom_entrypoint.sh
-    command: '/usr/bin/start-kafka.sh'
+    command:
+      - exec
+      - /etc/confluent/docker/run
     networks:
       - demo
     environment:
-      BROKER_ID: 1
-      ZK_CONNECT: zookeeper:2181
-      ADVERTISED_HOST: ${KAFKA_HOST}
-      ADVERTISED_PORT: 9092
-      NUM_PARTITIONS: 1
-      DELETE_TOPICS: "true"
-      AUTO_CREATE_TOPICS: "false"
-      LOG_RETENTION_HOURS: 24
-      TRANSACTION_MAX_TIMEOUT_MS: 3600000
+      KAFKA_BROKER_ID: 1
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://${KAFKA_HOST}:9092
+      KAFKA_NUM_PARTITIONS: 1
+      KAFKA_DELETE_TOPICS: "true"
+      KAFKA_AUTO_CREATE_TOPICS: "false"
+      KAFKA_LOG_RETENTION_HOURS: 24
+      KAFKA_TRANSACTION_MAX_TIMEOUT_MS: 3600000
       KAFKA_DELETE_TOPIC_ENABLE: "true"
-      LOG_PATH: /data/kafka-logs
+      KAFKA_LOGS_PATH: /data/kafka-logs
       KAFKA_HEAP_OPTS: "-Xmx800M -Xms800M"
     volumes:
       - kafka-data:/data

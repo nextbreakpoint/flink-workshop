@@ -39,17 +39,21 @@ export SERVER_JVMFLAGS="-javaagent:/opt/jmx-exporter/jmx-exporter.jar=7070:/etc/
 
 if [ -z "$JAAS_CONFIG_LOCATION" ]; then
   if [ -n "$JAAS_CONFIG_CONTENT" ]; then
-    echo $JAAS_CONFIG_CONTENT | base64 -d > $ZOO_CONF_DIR/server_jaas.conf
-    export SERVER_JVMFLAGS=$SERVER_JVMFLAGS" -Djava.security.auth.login.config="$ZOO_CONF_DIR"/server_jaas.conf"
-    echo "quorum.auth.enableSasl=true" >> "$CONFIG"
-    echo "quorum.auth.learnerRequireSasl=true" >> "$CONFIG"
-    echo "quorum.auth.serverRequireSasl=true" >> "$CONFIG"
-    echo "quorum.auth.learner.loginContext=QuorumLearner" >> "$CONFIG"
-    echo "quorum.auth.server.loginContext=QuorumServer" >> "$CONFIG"
-    echo "quorum.cnxn.threads.size=20" >> "$CONFIG"
-    echo "authProvider.1=org.apache.zookeeper.server.auth.SASLAuthenticationProvider" >> "$CONFIG"
-    echo "requireClientAuthScheme=sasl" >> "$CONFIG"
+    echo $JAAS_CONFIG_CONTENT | base64 -d > "$ZOO_CONF_DIR/server_jaas.conf"
+    JAAS_CONFIG_LOCATION="$ZOO_CONF_DIR/server_jaas.conf"
   fi
+fi
+
+if [ -n "$JAAS_CONFIG_LOCATION" ]; then
+  export SERVER_JVMFLAGS="$SERVER_JVMFLAGS -Djava.security.auth.login.config=$JAAS_CONFIG_LOCATION"
+  echo "quorum.auth.enableSasl=true" >> "$CONFIG"
+  echo "quorum.auth.learnerRequireSasl=true" >> "$CONFIG"
+  echo "quorum.auth.serverRequireSasl=true" >> "$CONFIG"
+  echo "quorum.auth.learner.loginContext=QuorumLearner" >> "$CONFIG"
+  echo "quorum.auth.server.loginContext=QuorumServer" >> "$CONFIG"
+  echo "quorum.cnxn.threads.size=20" >> "$CONFIG"
+  echo "authProvider.1=org.apache.zookeeper.server.auth.SASLAuthenticationProvider" >> "$CONFIG"
+  echo "requireClientAuthScheme=sasl" >> "$CONFIG"
 fi
 
 exec "$@"

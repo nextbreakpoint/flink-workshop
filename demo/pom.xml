@@ -4,14 +4,14 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.nextbreakpoint</groupId>
-    <artifactId>com.nextbreakpoint.flink.demo</artifactId>
+    <artifactId>com.nextbreakpoint.flinkdemo</artifactId>
     <version>0-SNAPSHOT</version>
     <packaging>jar</packaging>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <service.jar>${project.build.finalName}.${project.packaging}</service.jar>
-        <flink.version>1.5.3</flink.version>
+        <flink.version>1.7.2</flink.version>
         <httpcore.version>4.4.4</httpcore.version>
         <httpclient.version>4.5.3</httpclient.version>
         <kafka_2.11.version>0.11.0.2</kafka_2.11.version>

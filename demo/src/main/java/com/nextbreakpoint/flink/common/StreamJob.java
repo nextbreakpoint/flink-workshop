@@ -22,7 +22,7 @@ public abstract class StreamJob {
 
     private final StreamExecutionEnvironment env;
 
-    protected final String basePath;
+    private final String basePath;
 
     public StreamJob(StreamExecutionEnvironment env, String basePath) {
         this.env = env;
@@ -97,5 +97,4 @@ public abstract class StreamJob {
         }
         return s != null ? s : defaultValue;
     }
-
 }

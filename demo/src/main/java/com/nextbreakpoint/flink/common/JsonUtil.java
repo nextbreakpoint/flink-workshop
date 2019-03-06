@@ -6,7 +6,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.IOException;
 
 public class JsonUtil {
-
     private static final ObjectMapper mapper = new ObjectMapper();
 
     public static <T> String toJson(T t) {
@@ -24,5 +23,4 @@ public class JsonUtil {
             throw new RuntimeException(e);
         }
     }
-
 }

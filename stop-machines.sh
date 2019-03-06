@@ -1,5 +1,5 @@
 #!/bin/sh
 
-docker-machine stop demo-manager
-docker-machine stop demo-worker1
-docker-machine stop demo-worker2
+docker-machine stop workshop-manager
+docker-machine stop workshop-worker1
+docker-machine stop workshop-worker2

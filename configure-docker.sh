@@ -1,6 +1,6 @@
 #!/bin/sh
 
-docker-machine ssh demo-manager "sudo cat <<EOF >daemon.json
+docker-machine ssh workshop-manager "sudo cat <<EOF >daemon.json
 {
         \"experimental\" : true,
         \"log-driver\": \"json-file\",
@@ -22,12 +22,12 @@ docker-machine ssh demo-manager "sudo cat <<EOF >daemon.json
         },
         \"metrics-addr\" : \"0.0.0.0:9323\",
         \"insecure-registries\" : [
-          \"$(docker-machine ip demo-manager):5000\"
+          \"$(docker-machine ip workshop-manager):5000\"
         ]
 }
 EOF"
 
-docker-machine ssh demo-worker1 "sudo cat <<EOF >daemon.json
+docker-machine ssh workshop-worker1 "sudo cat <<EOF >daemon.json
 {
         \"experimental\" : true,
         \"log-driver\": \"json-file\",
@@ -49,12 +49,12 @@ docker-machine ssh demo-worker1 "sudo cat <<EOF >daemon.json
         },
         \"metrics-addr\" : \"0.0.0.0:9323\",
         \"insecure-registries\" : [
-          \"$(docker-machine ip demo-manager):5000\"
+          \"$(docker-machine ip workshop-manager):5000\"
         ]
 }
 EOF"
 
-docker-machine ssh demo-worker2 "sudo cat <<EOF >daemon.json
+docker-machine ssh workshop-worker2 "sudo cat <<EOF >daemon.json
 {
         \"experimental\" : true,
         \"log-driver\": \"json-file\",
@@ -76,19 +76,19 @@ docker-machine ssh demo-worker2 "sudo cat <<EOF >daemon.json
         },
         \"metrics-addr\" : \"0.0.0.0:9323\",
         \"insecure-registries\" : [
-          \"$(docker-machine ip demo-manager):5000\"
+          \"$(docker-machine ip workshop-manager):5000\"
         ]
 }
 EOF"
 
-docker-machine ssh demo-manager sudo mv daemon.json /etc/docker/daemon.json
-docker-machine ssh demo-worker1 sudo mv daemon.json /etc/docker/daemon.json
-docker-machine ssh demo-worker2 sudo mv daemon.json /etc/docker/daemon.json
+docker-machine ssh workshop-manager sudo mv daemon.json /etc/docker/daemon.json
+docker-machine ssh workshop-worker1 sudo mv daemon.json /etc/docker/daemon.json
+docker-machine ssh workshop-worker2 sudo mv daemon.json /etc/docker/daemon.json
 
-docker-machine ssh demo-manager sudo cat /etc/docker/daemon.json
-docker-machine ssh demo-worker1 sudo cat /etc/docker/daemon.json
-docker-machine ssh demo-worker2 sudo cat /etc/docker/daemon.json
+docker-machine ssh workshop-manager sudo cat /etc/docker/daemon.json
+docker-machine ssh workshop-worker1 sudo cat /etc/docker/daemon.json
+docker-machine ssh workshop-worker2 sudo cat /etc/docker/daemon.json
 
-docker-machine ssh demo-manager sudo /etc/init.d/docker restart
-docker-machine ssh demo-worker1 sudo /etc/init.d/docker restart
-docker-machine ssh demo-worker2 sudo /etc/init.d/docker restart
+docker-machine ssh workshop-manager sudo /etc/init.d/docker restart
+docker-machine ssh workshop-worker1 sudo /etc/init.d/docker restart
+docker-machine ssh workshop-worker2 sudo /etc/init.d/docker restart
