@@ -1,6 +1,6 @@
 ARG flink_version
 
-FROM demo-flink:${flink.version}
+FROM workshop-flink:${flink.version}
 
 USER root
 

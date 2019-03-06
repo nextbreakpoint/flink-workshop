@@ -12,7 +12,6 @@ services:
         - --
         - /custom_entrypoint.sh
     command:
-      - exec
       - /etc/confluent/docker/run
     networks:
       - demo
@@ -26,6 +25,7 @@ services:
       KAFKA_LOG_RETENTION_HOURS: 24
       KAFKA_TRANSACTION_MAX_TIMEOUT_MS: 3600000
       KAFKA_DELETE_TOPIC_ENABLE: "true"
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
       KAFKA_LOGS_PATH: /data/kafka-logs
       KAFKA_HEAP_OPTS: "-Xmx800M -Xms800M"
     volumes:
@@ -423,10 +423,10 @@ services:
   graphite:
     labels:
         component: graphite
-    image: hopsoft/graphite-statsd
+    image: graphiteapp/graphite-statsd
     ports:
       - target: 80
-        published: 80
+        published: 8080
         protocol: tcp
         mode: ingress
       - target: 2003

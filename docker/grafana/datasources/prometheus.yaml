@@ -15,7 +15,7 @@ datasources:
 - name: Graphite
   type: graphite
   access: proxy
-  url: http://graphite:80
+  url: http://graphite:8080
   isDefault: false
   version: 1
   editable: true

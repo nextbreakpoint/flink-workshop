@@ -5,7 +5,7 @@
 eval $(docker-machine env workshop-manager)
 
 docker build -t workshop-zookeeper:$ZOOKEEPER_VERSION --build-arg zookeeper_version=$ZOOKEEPER_VERSION docker/zookeeper
-docker build -t workshop-kafka:$KAFKA_VERSION --build-arg kafka_version=$KAFKA_VERSION --build-arg scala_version=$SCALA_VERSION docker/kafka
+docker build -t workshop-kafka:$KAFKA_VERSION --build-arg cp_kafka_version=$KAFKA_VERSION docker/kafka
 docker build -t workshop-flink:$FLINK_VERSION --build-arg flink_version=$FLINK_VERSION --build-arg scala_version=$SCALA_VERSION docker/flink
 docker build -t workshop-alertmanager:$STACK_VERSION docker/alertmanager
 docker build -t workshop-grafana:$STACK_VERSION docker/grafana

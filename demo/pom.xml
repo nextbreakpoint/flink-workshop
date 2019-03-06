@@ -287,8 +287,8 @@
                     <images>
                         <image>
                             <registry>docker.io</registry>
-                            <alias>demo-flink</alias>
-                            <name>demo-flink:${project.version}</name>
+                            <alias>workshop-flink</alias>
+                            <name>workshop-flink:${project.version}</name>
                             <build>
                                 <dockerFileDir>${project.basedir}/src/main/docker</dockerFileDir>
                                 <filter>${*}</filter>

@@ -65,7 +65,7 @@ services:
       FLINK_JM_HEAP: 128
       FLINK_ENVIRONMENT: ${ENVIRONMENT}
       FLINK_GRAPHITE_HOST: ${GRAPHITE_HOST}
-      FLINK_GRAPHITE_PREFIX: nextbreakpoint.flink.${ENVIRONMENT}.generate
+      FLINK_GRAPHITE_PREFIX: nextbreakpoint.workshop-flink.${ENVIRONMENT}.generate
       FLINK_SAVEPOINTS_LOCATION: ${FLINK_SAVEPOINTS_LOCATION}
       FLINK_CHECKPOINTS_LOCATION: ${FLINK_CHECKPOINTS_LOCATION}
       FLINK_FS_CHECKPOINTS_LOCATION: ${FLINK_FS_CHECKPOINTS_LOCATION}
@@ -74,6 +74,11 @@ services:
     logging:
       options:
         labels: "component"
+    ports:
+      - target: 8081
+        published: 18081
+        protocol: tcp
+        mode: ingress
     deploy:
       resources:
         limits:
@@ -114,7 +119,7 @@ services:
       FLINK_TM_HEAP: 256
       FLINK_ENVIRONMENT: ${ENVIRONMENT}
       FLINK_GRAPHITE_HOST: ${GRAPHITE_HOST}
-      FLINK_GRAPHITE_PREFIX: nextbreakpoint.flink.${ENVIRONMENT}.generate
+      FLINK_GRAPHITE_PREFIX: nextbreakpoint.workshop-flink.${ENVIRONMENT}.generate
       FLINK_SAVEPOINTS_LOCATION: ${FLINK_SAVEPOINTS_LOCATION}
       FLINK_CHECKPOINTS_LOCATION: ${FLINK_CHECKPOINTS_LOCATION}
       FLINK_FS_CHECKPOINTS_LOCATION: ${FLINK_FS_CHECKPOINTS_LOCATION}
@@ -214,7 +219,7 @@ services:
       FLINK_JM_HEAP: 128
       FLINK_ENVIRONMENT: ${ENVIRONMENT}
       FLINK_GRAPHITE_HOST: ${GRAPHITE_HOST}
-      FLINK_GRAPHITE_PREFIX: nextbreakpoint.flink.${ENVIRONMENT}.aggregate
+      FLINK_GRAPHITE_PREFIX: nextbreakpoint.workshop-flink.${ENVIRONMENT}.aggregate
       FLINK_SAVEPOINTS_LOCATION: ${FLINK_SAVEPOINTS_LOCATION}
       FLINK_CHECKPOINTS_LOCATION: ${FLINK_CHECKPOINTS_LOCATION}
       FLINK_FS_CHECKPOINTS_LOCATION: ${FLINK_FS_CHECKPOINTS_LOCATION}
@@ -223,6 +228,11 @@ services:
     logging:
       options:
         labels: "component"
+    ports:
+      - target: 8081
+        published: 28081
+        protocol: tcp
+        mode: ingress
     deploy:
       resources:
         limits:
@@ -263,7 +273,7 @@ services:
       FLINK_TM_HEAP: 1000
       FLINK_ENVIRONMENT: ${ENVIRONMENT}
       FLINK_GRAPHITE_HOST: ${GRAPHITE_HOST}
-      FLINK_GRAPHITE_PREFIX: nextbreakpoint.flink.${ENVIRONMENT}.aggregate
+      FLINK_GRAPHITE_PREFIX: nextbreakpoint.workshop-flink.${ENVIRONMENT}.aggregate
       FLINK_SAVEPOINTS_LOCATION: ${FLINK_SAVEPOINTS_LOCATION}
       FLINK_CHECKPOINTS_LOCATION: ${FLINK_CHECKPOINTS_LOCATION}
       FLINK_FS_CHECKPOINTS_LOCATION: ${FLINK_FS_CHECKPOINTS_LOCATION}
@@ -297,6 +307,159 @@ services:
         delay: 5s
         window: 120s
 
+  output-cli:
+    labels:
+        component: output-cli
+    image: ${FLINK_JOBS_IMAGE}
+    networks:
+      - demo
+    entrypoint:
+      - /wait-for-it.sh
+      - output-jobmanager:8081
+      - --timeout=300
+      - --
+      - /cli_entrypoint.sh
+    environment:
+      JOB_MANAGER_RPC_ADDRESS: 'output-jobmanager'
+      FLINK_ENVIRONMENT: ${ENVIRONMENT}
+      FLINK_JOB_CLASS: com.nextbreakpoint.flink.jobs.OutputSensorValuesJob
+      SAVEPOINT: ${SAVEPOINT}
+      BOOTSTRAP_SERVERS: kafka:9092
+      BUCKET_BASE_PATH: file:///tmp/output
+      JOB_PARALLELISM: ${TASK_MANAGER_REPLICAS}
+      SOURCE_TOPIC_NAME: test-output
+      CONSUMER_GROUP_NAME: output
+    logging:
+      options:
+        labels: "component"
+    deploy:
+      resources:
+        limits:
+          cpus: '0.5'
+          memory: 100M
+        reservations:
+          cpus: '0.01'
+          memory: 100M
+      replicas: 1
+      placement:
+        constraints:
+          - node.role == worker
+      update_config:
+        parallelism: 1
+        failure_action: rollback
+        delay: 30s
+        order: stop-first
+      restart_policy:
+        condition: any
+        delay: 5s
+        window: 120s
+
+  output-jobmanager:
+    labels:
+        component: output-jobmanager
+    image: ${FLINK_IMAGE}
+    networks:
+      - demo
+    entrypoint:
+        - /wait-for-it.sh
+        - graphite:80
+        - --timeout=300
+        - --
+        - /custom_entrypoint.sh
+    command: 'jobmanager'
+    environment:
+      JOB_MANAGER_RPC_ADDRESS: 'output-jobmanager'
+      FLINK_JM_HEAP: 128
+      FLINK_ENVIRONMENT: ${ENVIRONMENT}
+      FLINK_GRAPHITE_HOST: ${GRAPHITE_HOST}
+      FLINK_GRAPHITE_PREFIX: nextbreakpoint.workshop-flink.${ENVIRONMENT}.output
+      FLINK_SAVEPOINTS_LOCATION: ${FLINK_SAVEPOINTS_LOCATION}
+      FLINK_CHECKPOINTS_LOCATION: ${FLINK_CHECKPOINTS_LOCATION}
+      FLINK_FS_CHECKPOINTS_LOCATION: ${FLINK_FS_CHECKPOINTS_LOCATION}
+    volumes:
+      - output-jobmanager-data:/data
+    logging:
+      options:
+        labels: "component"
+    ports:
+      - target: 8081
+        published: 38081
+        protocol: tcp
+        mode: ingress
+    deploy:
+      resources:
+        limits:
+          cpus: '0.5'
+          memory: 200M
+        reservations:
+          cpus: '0.1'
+          memory: 200M
+      replicas: 1
+      placement:
+        constraints:
+          - node.role == worker
+      update_config:
+        parallelism: 1
+        failure_action: rollback
+        delay: 30s
+        order: stop-first
+      restart_policy:
+        condition: any
+        delay: 5s
+        window: 120s
+
+  output-taskmanager:
+    labels:
+        component: output-taskmanager
+    image: ${FLINK_IMAGE}
+    networks:
+      - demo
+    entrypoint:
+        - /wait-for-it.sh
+        - output-jobmanager:8081
+        - --timeout=300
+        - --
+        - /custom_entrypoint.sh
+    command: 'taskmanager'
+    environment:
+      JOB_MANAGER_RPC_ADDRESS: 'output-jobmanager'
+      FLINK_TM_HEAP: 256
+      FLINK_ENVIRONMENT: ${ENVIRONMENT}
+      FLINK_GRAPHITE_HOST: ${GRAPHITE_HOST}
+      FLINK_GRAPHITE_PREFIX: nextbreakpoint.workshop-flink.${ENVIRONMENT}.output
+      FLINK_SAVEPOINTS_LOCATION: ${FLINK_SAVEPOINTS_LOCATION}
+      FLINK_CHECKPOINTS_LOCATION: ${FLINK_CHECKPOINTS_LOCATION}
+      FLINK_FS_CHECKPOINTS_LOCATION: ${FLINK_FS_CHECKPOINTS_LOCATION}
+      TASK_MANAGER_NUMBER_OF_TASK_SLOTS: 1
+    volumes:
+      - output-taskmanager-data:/data
+    logging:
+      options:
+        labels: "component"
+    deploy:
+      resources:
+        limits:
+          cpus: '1.0'
+          memory: 300M
+        reservations:
+          cpus: '0.2'
+          memory: 300M
+      replicas: ${TASK_MANAGER_REPLICAS}
+      placement:
+        constraints:
+          - node.role == worker
+        preferences:
+          - spread: node.labels.zone
+      update_config:
+        parallelism: 1
+        failure_action: rollback
+        delay: 30s
+        order: stop-first
+      restart_policy:
+        condition: any
+        delay: 5s
+        window: 120s
+
 networks:
   demo:
     external: true
@@ -306,3 +469,5 @@ volumes:
     generate-taskmanager-data:
     aggregate-jobmanager-data:
     aggregate-taskmanager-data:
+    output-jobmanager-data:
+    output-taskmanager-data:
