@@ -6,7 +6,13 @@ eval $(docker-machine env workshop-manager)
 
 DEMO_VERSION=0-SNAPSHOT
 
-cd demo && mvn clean package
+ROOT_PATH=$(pwd)/../flink/demo
+
+pushd $ROOT_PATH
+
+mvn clean package
+
+popd
 
 docker tag workshop-flink:${DEMO_VERSION} $(docker-machine ip workshop-manager):5000/workshop-flink-jobs:${DEMO_VERSION}
 

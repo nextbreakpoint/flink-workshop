@@ -4,6 +4,8 @@ Example of jobs using Apache Kafka and Apache Flink on local Docker Swarm cluste
 
 ## How to deploy
 
+Open a terminal and change current directory to swarm.
+
 Create Docker machines:
 
     ./create-machines.sh
@@ -60,12 +62,28 @@ Create Docker Swarm:
 
 Verify Swarm is running:
 
-    ./swarm-run.sh docker node ls
+    ./swarm-manager.sh docker node ls
 
     ID                            HOSTNAME                STATUS              AVAILABILITY        MANAGER STATUS      ENGINE VERSION
     x18uukmtx9ewtytlcf0bmmlhy *   workshop-manager        Ready               Active              Leader              18.09.3-ce
     gykya6sg35gf6uphjtmufjud4     workshop-worker1        Ready               Active                                  18.09.3-ce
     pdraedbqsmacokisq1ayma08f     workshop-worker2        Ready               Active                                  18.09.3-ce
+
+Create overlay network:
+
+    ./create-network.sh
+
+Verify demo network has been created:
+
+    ./swarm-manager.sh docker network ls
+
+    NETWORK ID          NAME                DRIVER              SCOPE
+    e5f12f246b86        bridge              bridge              local
+    2582blnqoz6m        demo                overlay             swarm
+    fc9bedb73bf0        docker_gwbridge     bridge              local
+    8755236950a0        host                host                local
+    jj06e7pxydsr        ingress             overlay             swarm
+    aac2389b5947        none                null                local
 
 Create local Docker registry:
 
@@ -73,18 +91,18 @@ Create local Docker registry:
 
 Verify registry is running:
 
-    ./swarm-run.sh docker ps
+    ./swarm-manager.sh docker ps
 
     CONTAINER ID        IMAGE               COMMAND                  CREATED             STATUS              PORTS                    NAMES
     5826d2efbda3        registry:2          "/entrypoint.sh /etc…"   33 seconds ago      Up 32 seconds       0.0.0.0:5000->5000/tcp   registry
 
-Build local Docker images:
+Build servers Docker images:
 
     ./build-images.sh
 
 Verify images have been created:
 
-    ./swarm-run.sh docker images
+    ./swarm-manager.sh docker images
 
     REPOSITORY                                  TAG                                IMAGE ID            CREATED             SIZE
     192.168.99.108:5000/workshop-alertmanager   1.0                                deebb6bbaf3b        2 minutes ago       36.2MB
@@ -110,25 +128,25 @@ Verify images have been created:
     zookeeper                                   3.4.12                             cfed220ec48b        7 months ago        148MB
     prom/node-exporter                          v0.16.0                            188af75e2de0        9 months ago        22.9MB
 
-Build jobs Docker image:
+Build Flink demo Docker image:
 
-    ./build-jobs.sh
+    ./build-demo.sh
 
 Deploy the servers:
 
-    ./swarm-run.sh ./deploy-servers.sh
+    ./swarm-manager.sh ./deploy-servers.sh
 
 Create Kafka topics:
 
-    ./swarm-run.sh ./create-topics.sh
+    ./swarm-manager.sh ./create-topics.sh
 
 Deploy the Flink jobs:
 
-    ./swarm-run.sh ./deploy-flink.sh
+    ./swarm-manager.sh ./deploy-flink.sh
 
 Verify the stacks has been created:
 
-    ./swarm-run.sh docker stack ls
+    ./swarm-manager.sh docker stack ls
 
     NAME                SERVICES            ORCHESTRATOR
     servers             10                  Swarm
@@ -136,7 +154,7 @@ Verify the stacks has been created:
 
 Verify the services are running:
 
-    ./swarm-run.sh docker service ls
+    ./swarm-manager.sh docker service ls
 
     ID                  NAME                          MODE                REPLICAS            IMAGE                                                PORTS
     i7vff0fwyk6k        flink_aggregate-cli           replicated          1/1                 192.168.99.108:5000/workshop-flink-jobs:0-SNAPSHOT   
@@ -158,18 +176,18 @@ Verify the services are running:
 
 Tail the logs of Generate job:
 
-    ./swarm-run.sh docker service logs -f flink_generate-jobmanager
-    ./swarm-run.sh docker service logs -f flink_generate-taskmanager
+    ./swarm-manager.sh docker service logs -f flink_generate-jobmanager
+    ./swarm-manager.sh docker service logs -f flink_generate-taskmanager
 
 Tail the logs of Aggregate job:
 
-    ./swarm-run.sh docker service logs -f flink_aggregate-jobmanager
-    ./swarm-run.sh docker service logs -f flink_aggregate-taskmanager
+    ./swarm-manager.sh docker service logs -f flink_aggregate-jobmanager
+    ./swarm-manager.sh docker service logs -f flink_aggregate-taskmanager
 
 Tail the logs of Output job:
 
-    ./swarm-run.sh docker service logs -f flink_output-jobmanager
-    ./swarm-run.sh docker service logs -f flink_output-taskmanager
+    ./swarm-manager.sh docker service logs -f flink_output-jobmanager
+    ./swarm-manager.sh docker service logs -f flink_output-taskmanager
 
 Consumer messages from input topic:
 

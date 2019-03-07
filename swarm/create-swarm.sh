@@ -13,10 +13,9 @@ eval $(docker-machine env workshop-worker2)
 docker swarm join --token $TOKEN $(docker-machine ip workshop-manager):2377
 
 eval $(docker-machine env workshop-manager)
+
 export NODE=$(docker node ls -q --filter "name=workshop-worker1")
 docker node update --label-add zone=a $NODE
+
 export NODE=$(docker node ls -q --filter "name=workshop-worker2")
 docker node update --label-add zone=b $NODE
-
-eval $(docker-machine env workshop-manager)
-docker network create demo -d overlay --subnet 192.168.10.0/24 --attachable
