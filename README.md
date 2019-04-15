@@ -1,8 +1,40 @@
-# Data Pipeline Demo
+# flink-workshop
 
 Example of jobs using Apache Kafka and Apache Flink on local Docker Swarm cluster.
 
-## How to deploy
+## License
+
+The project is distributed under the terms of BSD 3-Clause License.
+
+    Copyright (c) 2019, Andrea Medeghini
+    All rights reserved.
+
+    Redistribution and use in source and binary forms, with or without
+    modification, are permitted provided that the following conditions are met:
+
+    * Redistributions of source code must retain the above copyright notice, this
+      list of conditions and the following disclaimer.
+
+    * Redistributions in binary form must reproduce the above copyright notice,
+      this list of conditions and the following disclaimer in the documentation
+      and/or other materials provided with the distribution.
+
+    * Neither the name of the project nor the names of its
+      contributors may be used to endorse or promote products derived from
+      this software without specific prior written permission.
+
+    THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+    AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+    IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+    DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
+    FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+    DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
+    SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
+    CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
+    OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+    OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+## Documentation
 
 Open a terminal and change current directory to swarm.
 
@@ -109,8 +141,8 @@ Verify images have been created:
     ./swarm-manager.sh docker images
 
     REPOSITORY                                  TAG                                IMAGE ID            CREATED             SIZE
-    192.168.99.109:5000/workshop-flink-jobs     0-SNAPSHOT                         eff10741e55b        24 seconds ago      607MB
-    workshop-flink                              0-SNAPSHOT                         eff10741e55b        24 seconds ago      607MB
+    192.168.99.109:5000/workshop-flink-jobs     1.0.0                              eff10741e55b        24 seconds ago      607MB
+    workshop-flink                              1.0.0                              eff10741e55b        24 seconds ago      607MB
     192.168.99.109:5000/workshop-nodeexporter   1.0                                3a180cf220a3        11 minutes ago      22.9MB
     workshop-nodeexporter                       1.0                                3a180cf220a3        11 minutes ago      22.9MB
     192.168.99.109:5000/workshop-prometheus     1.0                                2c409aa9f37a        11 minutes ago      119MB
@@ -159,13 +191,13 @@ Verify the services are running:
     ./swarm-manager.sh docker service ls
 
     ID                  NAME                          MODE                REPLICAS            IMAGE                                                PORTS
-    yk73ly7p3d9j        flink_aggregate-cli           replicated          1/1                 192.168.99.109:5000/workshop-flink-jobs:0-SNAPSHOT   
+    yk73ly7p3d9j        flink_aggregate-cli           replicated          1/1                 192.168.99.109:5000/workshop-flink-jobs:1.0.0   
     xqa97ok6gvf5        flink_aggregate-jobmanager    replicated          1/1                 192.168.99.109:5000/workshop-flink:1.7.2             *:28081->8081/tcp
     wh6c56a55j0t        flink_aggregate-taskmanager   replicated          1/1                 192.168.99.109:5000/workshop-flink:1.7.2             
-    vt61a43qmwpq        flink_generate-cli            replicated          1/1                 192.168.99.109:5000/workshop-flink-jobs:0-SNAPSHOT   
+    vt61a43qmwpq        flink_generate-cli            replicated          1/1                 192.168.99.109:5000/workshop-flink-jobs:1.0.0   
     qvu1f3896gs4        flink_generate-jobmanager     replicated          1/1                 192.168.99.109:5000/workshop-flink:1.7.2             *:18081->8081/tcp
     8kcpid7mwk5m        flink_generate-taskmanager    replicated          1/1                 192.168.99.109:5000/workshop-flink:1.7.2             
-    ottxwvigtvfv        flink_print-cli               replicated          1/1                 192.168.99.109:5000/workshop-flink-jobs:0-SNAPSHOT   
+    ottxwvigtvfv        flink_print-cli               replicated          1/1                 192.168.99.109:5000/workshop-flink-jobs:1.0.0   
     34nk9k658fka        flink_print-jobmanager        replicated          1/1                 192.168.99.109:5000/workshop-flink:1.7.2             *:38081->8081/tcp
     e4uux5nnbomt        flink_print-taskmanager       replicated          1/1                 192.168.99.109:5000/workshop-flink:1.7.2             
     svbmw3i1rr0v        servers_alertmanager          replicated          1/1                 192.168.99.109:5000/workshop-alertmanager:1.0        *:9093->9093/tcp
@@ -178,7 +210,7 @@ Verify the services are running:
     gdv8zewlx6xf        servers_prometheus            replicated          1/1                 192.168.99.109:5000/workshop-prometheus:1.0          *:9090->9090/tcp
     vncbw3xx4h2n        servers_unsee                 replicated          1/1                 cloudflare/unsee:v0.8.0                              
     mxaxxtvmw3p6        servers_zookeeper             replicated          1/1                 192.168.99.109:5000/workshop-zookeeper:3.4.12        *:2181->2181/tcp
-    
+
 Tail the logs of Generate job:
 
     ./swarm-manager.sh docker service logs -f flink_generate-jobmanager

@@ -4,7 +4,7 @@
 
 eval $(docker-machine env workshop-manager)
 
-DEMO_VERSION=0-SNAPSHOT
+DEMO_VERSION=1.0.0
 
 ROOT_PATH=$(pwd)/../flink/com.nextbreakpoint.flinkworkshop
 

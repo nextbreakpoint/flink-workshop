@@ -5,12 +5,33 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.nextbreakpoint</groupId>
     <artifactId>com.nextbreakpoint.flinkworkshop</artifactId>
-    <version>0-SNAPSHOT</version>
+    <version>1.0.0</version>
+    <description>Example of Flink jobs for workshop</description>
+    <name>com.nextbreakpoint.flinkworkshop</name>
     <packaging>jar</packaging>
+    <licenses>
+        <license>
+            <name>BSD 3</name>
+            <url>http://nextbreakpoint.com/licenses/BSD3</url>
+        </license>
+    </licenses>
+    <developers>
+        <developer>
+            <name>Andrea Medeghini</name>
+            <email>andrea@nextbreakpoint.com</email>
+        </developer>
+    </developers>
+    <scm>
+        <connection>scm:git:git@github.com:nextbreakpoint/flink-workshop.git</connection>
+        <developerConnection>scm:git:git@github.com:nextbreakpoint/flink-workshop.git</developerConnection>
+        <url>git@github.com:nextbreakpoint/flink-workshop.git</url>
+    </scm>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-        <service.jar>${project.build.finalName}.${project.packaging}</service.jar>
+        <java.version>1.8</java.version>
+        <maven.compiler.source>1.8</maven.compiler.source>
+        <maven.compiler.target>1.8</maven.compiler.target>
         <flink.version>1.7.2</flink.version>
         <httpcore.version>4.4.4</httpcore.version>
         <httpclient.version>4.5.3</httpclient.version>
@@ -23,19 +44,19 @@
         <assertj-core.version>3.9.0</assertj-core.version>
         <mockito.version>2.15.0</mockito.version>
         <awaitility.version>3.1.0</awaitility.version>
+        <junit-platform-surefire-provider.version>1.0.3</junit-platform-surefire-provider.version>
+        <junit-jupiter-engine.version>5.0.3</junit-jupiter-engine.version>
         <maven-jar-plugin.version>3.0.2</maven-jar-plugin.version>
         <maven-compiler-plugin.version>3.7.0</maven-compiler-plugin.version>
         <maven-dependency-plugin.version>2.9</maven-dependency-plugin.version>
         <maven-toolchains-plugin.version>1.1</maven-toolchains-plugin.version>
         <maven-shade-plugin.version>3.1.0</maven-shade-plugin.version>
         <maven-surefire-plugin.version>2.19.1</maven-surefire-plugin.version>
-        <junit-platform-surefire-provider.version>1.0.3</junit-platform-surefire-provider.version>
-        <junit-jupiter-engine.version>5.0.3</junit-jupiter-engine.version>
+        <github-release-plugin.version>1.1.1</github-release-plugin.version>
+        <twitter-maven-plugin.version>1.0.1</twitter-maven-plugin.version>
         <docker-maven-plugin.version>0.23.0</docker-maven-plugin.version>
-        <java.version>1.8</java.version>
-        <maven.compiler.source>1.8</maven.compiler.source>
-        <maven.compiler.target>1.8</maven.compiler.target>
         <flink-runtime-scope>provided</flink-runtime-scope>
+        <service.jar>${project.build.finalName}.${project.packaging}</service.jar>
     </properties>
     <profiles>
         <profile>
@@ -50,6 +71,54 @@
                 <!-- we need to include the Flink runtime when running from IntelliJ -->
                 <flink-runtime-scope>compile</flink-runtime-scope>
             </properties>
+        </profile>
+        <profile>
+            <id>github</id>
+            <activation>
+                <property>
+                    <name>channel</name>
+                    <value>github</value>
+                </property>
+            </activation>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>de.jutzig</groupId>
+                        <artifactId>github-release-plugin</artifactId>
+                        <version>${github-release-plugin.version}</version>
+                        <configuration>
+                            <releaseName>${project.name} ${project.version}</releaseName>
+                            <tag>v${project.version}</tag>
+                        </configuration>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+        <profile>
+            <id>twitter</id>
+            <activation>
+                <property>
+                    <name>channel</name>
+                    <value>twitter</value>
+                </property>
+            </activation>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>com.nextbreakpoint</groupId>
+                        <artifactId>twitter-maven-plugin</artifactId>
+                        <version>${twitter-maven-plugin.version}</version>
+                        <configuration>
+                            <debug>false</debug>
+                            <oauthConsumerKey>${consumerKey}</oauthConsumerKey>
+                            <oauthConsumerSecret>${consumerSecret}</oauthConsumerSecret>
+                            <oauthAccessToken>${accessToken}</oauthAccessToken>
+                            <oauthAccessTokenSecret>${accessTokenSecret}</oauthAccessTokenSecret>
+                            <status>Version ${project.version} of ${project.name} has been released! ${project.url}</status>
+                        </configuration>
+                    </plugin>
+                </plugins>
+            </build>
         </profile>
     </profiles>
     <dependencies>
@@ -252,11 +321,6 @@
                             <include>*:*</include>
                         </includes>
                     </artifactSet>
-                    <transformers>
-                        <transformer implementation="org.apache.maven.plugins.shade.resource.AppendingTransformer">
-                            <resource>reference.conf</resource>
-                        </transformer>
-                    </transformers>
                 </configuration>
             </plugin>
             <plugin>

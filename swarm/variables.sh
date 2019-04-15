@@ -13,7 +13,7 @@ export FLINK_VERSION=1.7.2
 export FLINK_IMAGE=$(docker-machine ip workshop-manager):5000/workshop-flink:$FLINK_VERSION
 export ZOOKEEPER_VERSION=3.4.12
 export ZOOKEEPER_IMAGE=$(docker-machine ip workshop-manager):5000/workshop-zookeeper:$ZOOKEEPER_VERSION
-export FLINK_JOBS_VERSION=0-SNAPSHOT
+export FLINK_JOBS_VERSION=1.0.0
 export FLINK_JOBS_IMAGE=$(docker-machine ip workshop-manager):5000/workshop-flink-jobs:$FLINK_JOBS_VERSION
 
 export ENVIRONMENT=workshop
