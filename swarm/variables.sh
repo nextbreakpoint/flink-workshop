@@ -16,7 +16,7 @@ export ZOOKEEPER_IMAGE=$(docker-machine ip workshop-manager):5000/workshop-zooke
 export FLINK_JOBS_VERSION=0-SNAPSHOT
 export FLINK_JOBS_IMAGE=$(docker-machine ip workshop-manager):5000/workshop-flink-jobs:$FLINK_JOBS_VERSION
 
-export ENVIRONMENT=demo
+export ENVIRONMENT=workshop
 export TASK_MANAGER_REPLICAS=1
 export GRAPHITE_HOST=graphite
 export FLINK_SAVEPOINTS_LOCATION=file:///tmp/savepoints

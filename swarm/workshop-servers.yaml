@@ -14,7 +14,7 @@ services:
     command:
       - /etc/confluent/docker/run
     networks:
-      - demo
+      - workshop
     environment:
       KAFKA_BROKER_ID: 1
       KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
@@ -66,7 +66,7 @@ services:
     labels:
         component: zookeeper
     networks:
-      - demo
+      - workshop
     environment:
       ZOO_MY_ID: 1
     volumes:
@@ -108,7 +108,7 @@ services:
     labels:
         component: cadvisor
     networks:
-      - demo
+      - workshop
     command: -logtostderr -docker_only
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock:ro
@@ -144,7 +144,7 @@ services:
     labels:
         component: grafana
     networks:
-      - demo
+      - workshop
     environment:
       - GF_SECURITY_ADMIN_USER=${ADMIN_USER:-admin}
       - GF_SECURITY_ADMIN_PASSWORD=${ADMIN_PASSWORD:-admin}
@@ -194,7 +194,7 @@ services:
     labels:
         component: alertmanager
     networks:
-      - demo
+      - workshop
     environment:
       - SLACK_URL=${SLACK_URL:-https://hooks.slack.com/services/TOKEN}
       - SLACK_CHANNEL=${SLACK_CHANNEL:-general}
@@ -240,7 +240,7 @@ services:
     labels:
         component: unsee
     networks:
-      - demo
+      - workshop
     environment:
       - "ALERTMANAGER_URIS=default:http://alertmanager:9093"
     logging:
@@ -271,7 +271,7 @@ services:
     labels:
         component: node-exporter
     networks:
-      - demo
+      - workshop
     environment:
       - NODE_ID={{.Node.ID}}
     volumes:
@@ -317,7 +317,7 @@ services:
     environment:
       - ENVIRONMENT=${ENVIRONMENT}
     networks:
-      - demo
+      - workshop
     command:
       - '--config.file=/etc/prometheus/prometheus.yml'
       - '--web.console.libraries=/etc/prometheus/console_libraries'
@@ -362,7 +362,7 @@ services:
     labels:
         component: dockerd-exporter
     networks:
-      - demo
+      - workshop
     environment:
       - DOCKER_GWBRIDGE_IP=172.18.0.1
     configs:
@@ -391,7 +391,7 @@ services:
   #     - "9093:9093"
   #     - "9094:9094"
   #   networks:
-  #     - demo
+  #     - workshop
   #   environment:
   #     - ADMIN_USER=${ADMIN_USER:-admin}
   #     - ADMIN_PASSWORD=${ADMIN_PASSWORD:-admin}
@@ -434,7 +434,7 @@ services:
         protocol: tcp
         mode: ingress
     networks:
-      - demo
+      - workshop
     volumes:
       - graphite:/opt/graphite/storage
     logging:
@@ -463,7 +463,7 @@ services:
           memory: 128M
 
 networks:
-  demo:
+  workshop:
     external: true
 
 volumes:

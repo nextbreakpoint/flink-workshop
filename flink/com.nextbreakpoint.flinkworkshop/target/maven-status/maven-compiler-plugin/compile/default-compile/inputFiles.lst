@@ -1,0 +1,13 @@
+/Users/andrea/GitHub/flink-workshop/flink/com.nextbreakpoint.flinkworkshop/src/main/java/com/nextbreakpoint/flink/jobs/PrintJob.java
+/Users/andrea/GitHub/flink-workshop/flink/com.nextbreakpoint.flinkworkshop/src/main/java/com/nextbreakpoint/flink/common/JsonUtil.java
+/Users/andrea/GitHub/flink-workshop/flink/com.nextbreakpoint.flinkworkshop/src/main/java/com/nextbreakpoint/flink/jobs/TestJob.java
+/Users/andrea/GitHub/flink-workshop/flink/com.nextbreakpoint.flinkworkshop/src/main/java/com/nextbreakpoint/flink/sensor/SensorData.java
+/Users/andrea/GitHub/flink-workshop/flink/com.nextbreakpoint.flinkworkshop/src/main/java/com/nextbreakpoint/flink/common/Constants.java
+/Users/andrea/GitHub/flink-workshop/flink/com.nextbreakpoint.flinkworkshop/src/main/java/com/nextbreakpoint/flink/sensor/SensorSerializationSchema.java
+/Users/andrea/GitHub/flink-workshop/flink/com.nextbreakpoint.flinkworkshop/src/main/java/com/nextbreakpoint/flink/jobs/AggregateJob.java
+/Users/andrea/GitHub/flink-workshop/flink/com.nextbreakpoint.flinkworkshop/src/main/java/com/nextbreakpoint/flink/sensor/SensorDeserializationSchema.java
+/Users/andrea/GitHub/flink-workshop/flink/com.nextbreakpoint.flinkworkshop/src/main/java/com/nextbreakpoint/flink/sensor/SensorTimestampExtractor.java
+/Users/andrea/GitHub/flink-workshop/flink/com.nextbreakpoint.flinkworkshop/src/main/java/com/nextbreakpoint/flink/jobs/GenerateJob.java
+/Users/andrea/GitHub/flink-workshop/flink/com.nextbreakpoint.flinkworkshop/src/main/java/com/nextbreakpoint/flink/common/StreamJob.java
+/Users/andrea/GitHub/flink-workshop/flink/com.nextbreakpoint.flinkworkshop/src/main/java/com/nextbreakpoint/flink/common/FlinkUtil.java
+/Users/andrea/GitHub/flink-workshop/flink/com.nextbreakpoint.flinkworkshop/src/main/java/com/nextbreakpoint/flink/common/DoubleGauge.java

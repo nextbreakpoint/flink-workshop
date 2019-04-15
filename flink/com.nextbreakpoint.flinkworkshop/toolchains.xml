@@ -1,0 +1,13 @@
+<toolchains>
+  <!-- JDK toolchains -->
+  <toolchain>
+    <type>jdk</type>
+    <provides>
+      <version>1.8</version>
+      <vendor>oracle</vendor>
+    </provides>
+    <configuration>
+      <jdkHome>/Library/Java/JavaVirtualMachines/jdk1.8.0_191.jdk/Contents/Home</jdkHome>
+    </configuration>
+  </toolchain>
+</toolchains>

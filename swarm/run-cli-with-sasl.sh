@@ -1,6 +1,6 @@
 #!/bin/sh
 
-docker run -it --rm --net=demo ${ZOOKEEPER_IMAGE} zkCli.sh -server zookeeper:2181
+docker run -it --rm --net=workshop ${ZOOKEEPER_IMAGE} zkCli.sh -server zookeeper:2181
 
 # Examples
 # create /something "value"
