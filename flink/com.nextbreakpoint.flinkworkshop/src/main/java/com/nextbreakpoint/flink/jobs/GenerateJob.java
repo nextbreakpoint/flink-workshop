@@ -21,7 +21,6 @@ import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 import static com.nextbreakpoint.flink.common.Constants.BUCKET_BASE_PATH;
-import static com.nextbreakpoint.flink.common.Constants.JOB_PARALLELISM;
 import static com.nextbreakpoint.flink.common.Constants.TARGET_TOPIC_NAME;
 import static java.lang.Integer.valueOf;
 
@@ -46,11 +45,7 @@ public class GenerateJob extends StreamJob {
 
         final String targetTopicName = getNonNullableParam(parameters, TARGET_TOPIC_NAME);
 
-        final int parallelism = Integer.valueOf(getNullableParam(parameters, JOB_PARALLELISM, "1"));
-
         final StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
-
-        env.setParallelism(valueOf(parallelism));
 
         final SinkFunction<SensorData> sink = FlinkUtil.createKafkaSink(parameters, targetTopicName, new SensorSerializationSchema(targetTopicName));
 

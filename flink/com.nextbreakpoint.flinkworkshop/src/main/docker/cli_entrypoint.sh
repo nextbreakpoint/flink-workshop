@@ -18,12 +18,6 @@ if [ -z "$FLINK_JOB_CLASS" ]; then
     exit 1
 fi
 
-echo "Flink job parallelism: $JOB_PARALLELISM"
-if [ -z "$JOB_PARALLELISM" ]; then
-    echo "Job parallelism not provided, exiting"
-    exit 1
-fi
-
 if [ -n "$KEYSTORE_CONTENT" ]; then
   echo "Found keystore content"
   echo $KEYSTORE_CONTENT | base64 -d > /keystore.jks
@@ -46,6 +40,13 @@ else
     SAVEPOINT_OPTS=""
 fi
 
+if [ -z "$JOB_PARALLELISM" ]; then
+    echo "Job parallelism not provided, use default (1)"
+    JOB_PARALLELISM=1
+fi
+
+echo "Flink job parallelism: $JOB_PARALLELISM"
+
 ENVIRONMENT=$FLINK_ENVIRONMENT
 
 OLD_JOBID=$(flink list -r -m ${JOB_MANAGER_RPC_ADDRESS}:8081 | grep '(RUNNING)' | awk '{print $4}')
@@ -58,9 +59,9 @@ fi
 flink run \
     -m "$JOB_MANAGER_RPC_ADDRESS:8081" \
     -c "$FLINK_JOB_CLASS" \
+    -p $JOB_PARALLELISM \
     $SAVEPOINT_OPTS \
     "/maven/$SERVICE_JAR" \
-    --JOB_PARALLELISM "$JOB_PARALLELISM" \
     --BUCKET_BASE_PATH "$BUCKET_BASE_PATH" \
     --BOOTSTRAP_SERVERS "$BOOTSTRAP_SERVERS" \
     --SOURCE_TOPIC_NAME "$SOURCE_TOPIC_NAME" \

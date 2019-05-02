@@ -35,7 +35,6 @@ import java.util.stream.IntStream;
 
 import static com.nextbreakpoint.flink.common.Constants.BUCKET_BASE_PATH;
 import static com.nextbreakpoint.flink.common.Constants.CONSUMER_GROUP_NAME;
-import static com.nextbreakpoint.flink.common.Constants.JOB_PARALLELISM;
 import static com.nextbreakpoint.flink.common.Constants.SOURCE_TOPIC_NAME;
 import static com.nextbreakpoint.flink.common.Constants.TARGET_TOPIC_NAME;
 import static com.nextbreakpoint.flink.common.FlinkUtil.createKafkaSource;
@@ -66,11 +65,7 @@ public class AggregateJob extends StreamJob {
 
         final String consumerGroupName = getNonNullableParam(parameters, CONSUMER_GROUP_NAME);
 
-        final int parallelism = Integer.valueOf(getNullableParam(parameters, JOB_PARALLELISM, "1"));
-
         final StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
-
-        env.setParallelism(valueOf(parallelism));
 
         final DataStreamSource<SensorData> source = env.addSource(createKafkaSource(parameters, sourceTopicName, new SensorDeserializationSchema(), consumerGroupName, "latest"));
 

@@ -20,7 +20,6 @@ import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 import static com.nextbreakpoint.flink.common.Constants.BUCKET_BASE_PATH;
-import static com.nextbreakpoint.flink.common.Constants.JOB_PARALLELISM;
 import static java.lang.Integer.valueOf;
 
 public class TestJob extends StreamJob {
@@ -42,17 +41,13 @@ public class TestJob extends StreamJob {
 
         final String bucketBasePath = getNonNullableParam(parameters, BUCKET_BASE_PATH);
 
-        final int parallelism = Integer.valueOf(getNullableParam(parameters, JOB_PARALLELISM, "1"));
-
         final StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
-
-        env.setParallelism(valueOf(parallelism));
 
         final DataStreamSource<SensorData> source = env.addSource(new RandomSensorDataSource());
 
         final TestJob job = new TestJob(env, bucketBasePath, source, new PrintSinkFunction<>());
 
-        job.enableCheckpointing(600000);
+        job.enableCheckpointing(60000);
 
         job.disableRestart();
 
