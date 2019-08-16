@@ -47,7 +47,7 @@ public class TestJob extends StreamJob {
 
         final TestJob job = new TestJob(env, bucketBasePath, source, new PrintSinkFunction<>());
 
-        job.enableCheckpointing(60000);
+        job.enableCheckpointing(3600000);
 
         job.disableRestart();
 
@@ -62,7 +62,7 @@ public class TestJob extends StreamJob {
     }
 
     private static class RandomSensorDataSource implements SourceFunction<SensorData> {
-        private static final List<Tuple2<Integer, UUID>> sensors = IntStream.range(0, 10)
+        private static final List<Tuple2<Integer, UUID>> sensors = IntStream.range(0, 1)
                 .mapToObj(i -> new Tuple2<>(i, UUID.randomUUID())).collect(Collectors.toList());
 
         private volatile boolean running = true;
@@ -88,10 +88,10 @@ public class TestJob extends StreamJob {
 
                 sourceContext.markAsTemporarilyIdle();
 
-                time += 0.1;
+                time += 10;
 
                 try {
-                    Thread.sleep(100);
+                    Thread.sleep(10000);
                 } catch (InterruptedException e) {
                     break;
                 }

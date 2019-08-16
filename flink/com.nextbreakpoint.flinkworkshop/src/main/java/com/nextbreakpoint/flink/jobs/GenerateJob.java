@@ -53,7 +53,7 @@ public class GenerateJob extends StreamJob {
 
         final GenerateJob job = new GenerateJob(env, bucketBasePath, source, sink);
 
-        job.enableCheckpointing(600000);
+        job.enableCheckpointing(3600000);
 
         job.disableRestart();
 
@@ -94,10 +94,10 @@ public class GenerateJob extends StreamJob {
 
                 sourceContext.markAsTemporarilyIdle();
 
-                time += 0.1;
+                time += 1;
 
                 try {
-                    Thread.sleep(100);
+                    Thread.sleep(1000);
                 } catch (InterruptedException e) {
                     break;
                 }

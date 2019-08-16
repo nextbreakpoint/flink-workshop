@@ -75,7 +75,7 @@ public class AggregateJob extends StreamJob {
 
         final AggregateJob job = new AggregateJob(env, bucketBasePath, source, sinks);
 
-        job.enableCheckpointing(600000);
+        job.enableCheckpointing(3600000);
 
         job.disableRestart();
 

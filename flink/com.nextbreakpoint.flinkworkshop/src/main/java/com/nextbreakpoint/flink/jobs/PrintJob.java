@@ -45,7 +45,7 @@ public class PrintJob extends StreamJob {
 
         final PrintJob job = new PrintJob(env, bucketBasePath, source, new PrintSinkFunction<>());
 
-        job.enableCheckpointing(600000);
+        job.enableCheckpointing(3600000);
 
         job.disableRestart();
 
