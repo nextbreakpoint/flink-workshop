@@ -22,15 +22,10 @@ import org.apache.flink.streaming.api.windowing.assigners.SlidingEventTimeWindow
 import org.apache.flink.streaming.api.windowing.time.Time;
 import org.apache.flink.streaming.api.windowing.windows.TimeWindow;
 import org.apache.flink.util.Collector;
-import org.joda.time.format.ISODateTimeFormat;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.IntStream;
 
 import static com.nextbreakpoint.flink.common.Constants.BUCKET_BASE_PATH;
@@ -38,7 +33,6 @@ import static com.nextbreakpoint.flink.common.Constants.CONSUMER_GROUP_NAME;
 import static com.nextbreakpoint.flink.common.Constants.SOURCE_TOPIC_NAME;
 import static com.nextbreakpoint.flink.common.Constants.TARGET_TOPIC_NAME;
 import static com.nextbreakpoint.flink.common.FlinkUtil.createKafkaSource;
-import static java.lang.Integer.valueOf;
 
 public class AggregateJob extends StreamJob {
     private final DataStream<SensorData> source;
@@ -163,7 +157,7 @@ public class AggregateJob extends StreamJob {
             iterator.forEachRemaining(value -> {
                 counter.inc();
                 gauge.setValue(value);
-                out.collect(new SensorData(key, value, ISODateTimeFormat.dateTime().print(window.maxTimestamp())));
+                out.collect(new SensorData(key, value, new Date(window.maxTimestamp()).toString()));
             });
         }
     }

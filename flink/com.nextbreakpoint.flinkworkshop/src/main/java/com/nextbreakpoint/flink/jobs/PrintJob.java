@@ -14,7 +14,6 @@ import static com.nextbreakpoint.flink.common.Constants.BUCKET_BASE_PATH;
 import static com.nextbreakpoint.flink.common.Constants.CONSUMER_GROUP_NAME;
 import static com.nextbreakpoint.flink.common.Constants.SOURCE_TOPIC_NAME;
 import static com.nextbreakpoint.flink.common.FlinkUtil.createKafkaSource;
-import static java.lang.Integer.valueOf;
 
 public class PrintJob extends StreamJob {
     private final DataStream<SensorData> source;

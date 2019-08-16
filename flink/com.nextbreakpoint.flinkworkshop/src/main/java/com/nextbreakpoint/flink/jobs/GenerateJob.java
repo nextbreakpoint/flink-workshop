@@ -12,9 +12,11 @@ import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 import org.apache.flink.streaming.api.functions.sink.SinkFunction;
 import org.apache.flink.streaming.api.functions.source.SourceFunction;
 import org.apache.flink.streaming.api.watermark.Watermark;
-import org.joda.time.DateTime;
-import org.joda.time.format.ISODateTimeFormat;
 
+import java.time.Instant;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -22,7 +24,6 @@ import java.util.stream.IntStream;
 
 import static com.nextbreakpoint.flink.common.Constants.BUCKET_BASE_PATH;
 import static com.nextbreakpoint.flink.common.Constants.TARGET_TOPIC_NAME;
-import static java.lang.Integer.valueOf;
 
 public class GenerateJob extends StreamJob {
     private final DataStream<SensorData> source;
@@ -80,17 +81,17 @@ public class GenerateJob extends StreamJob {
             double time = 0;
 
             for (;;) {
-                final DateTime instant = new DateTime();
+                final long millis = System.currentTimeMillis();
 
                 final double currentTime = time;
 
                 final List<SensorData> messages = sensors.stream()
-                        .map(tuple -> new SensorData(tuple.f1.toString(), Math.sin(2 * Math.PI * (currentTime + tuple.f0)) + Math.random() / 100.0, ISODateTimeFormat.dateTime().print(instant)))
+                        .map(tuple -> new SensorData(tuple.f1.toString(), Math.sin(2 * Math.PI * (currentTime + tuple.f0)) + Math.random() / 100.0, LocalDateTime.ofInstant(Instant.ofEpochMilli(millis), ZoneId.systemDefault()).format(DateTimeFormatter.ISO_LOCAL_DATE_TIME)))
                         .collect(Collectors.toList());
 
-                messages.forEach(message -> sourceContext.collectWithTimestamp(message, instant.getMillis()));
+                messages.forEach(message -> sourceContext.collectWithTimestamp(message, millis));
 
-                sourceContext.emitWatermark(new Watermark(instant.getMillis()));
+                sourceContext.emitWatermark(new Watermark(millis));
 
                 sourceContext.markAsTemporarilyIdle();
 
