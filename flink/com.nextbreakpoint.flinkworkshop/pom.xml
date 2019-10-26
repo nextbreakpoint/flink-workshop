@@ -5,7 +5,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.nextbreakpoint</groupId>
     <artifactId>com.nextbreakpoint.flinkworkshop</artifactId>
-    <version>1.0.2</version>
+    <version>1.1.0</version>
     <description>Example of Flink jobs for workshop</description>
     <name>com.nextbreakpoint.flinkworkshop</name>
     <packaging>jar</packaging>
@@ -32,32 +32,28 @@
         <java.version>1.8</java.version>
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
-        <flink.version>1.7.2</flink.version>
-        <httpcore.version>4.4.4</httpcore.version>
-        <httpclient.version>4.5.3</httpclient.version>
+        <flink.version>1.9.0</flink.version>
+        <httpcore.version>4.4.12</httpcore.version>
+        <httpclient.version>4.5.10</httpclient.version>
         <kafka_2.11.version>0.11.0.2</kafka_2.11.version>
-        <jackson.version>2.9.9</jackson.version>
-        <jackson-databind.version>2.9.9.3</jackson-databind.version>
-        <hadoop.version>2.8.3</hadoop.version>
-        <slf4j.version>1.7.25</slf4j.version>
-        <guava.version>23.0</guava.version>
-        <junit-jupiter.version>5.0.3</junit-jupiter.version>
-        <assertj-core.version>3.9.0</assertj-core.version>
-        <mockito.version>2.15.0</mockito.version>
-        <awaitility.version>3.1.0</awaitility.version>
-        <junit-platform-surefire-provider.version>1.0.3</junit-platform-surefire-provider.version>
-        <junit-jupiter-engine.version>5.0.3</junit-jupiter-engine.version>
-        <maven-jar-plugin.version>3.0.2</maven-jar-plugin.version>
-        <maven-compiler-plugin.version>3.7.0</maven-compiler-plugin.version>
-        <maven-dependency-plugin.version>2.9</maven-dependency-plugin.version>
-        <maven-toolchains-plugin.version>1.1</maven-toolchains-plugin.version>
-        <maven-shade-plugin.version>3.1.0</maven-shade-plugin.version>
-        <maven-surefire-plugin.version>2.19.1</maven-surefire-plugin.version>
+        <jackson.version>2.10.0</jackson.version>
+        <hadoop.version>2.8.5</hadoop.version>
+        <slf4j.version>1.7.28</slf4j.version>
+        <guava.version>28.1-jre</guava.version>
+        <junit-jupiter.version>5.5.2</junit-jupiter.version>
+        <assertj-core.version>3.13.2</assertj-core.version>
+        <mockito.version>3.1.0</mockito.version>
+        <awaitility.version>4.0.1</awaitility.version>
+        <maven-jar-plugin.version>3.1.2</maven-jar-plugin.version>
+        <maven-compiler-plugin.version>3.8.1</maven-compiler-plugin.version>
+        <maven-dependency-plugin.version>3.1.1</maven-dependency-plugin.version>
+        <maven-toolchains-plugin.version>3.0.0</maven-toolchains-plugin.version>
+        <maven-shade-plugin.version>3.2.1</maven-shade-plugin.version>
+        <maven-surefire-plugin.version>2.22.2</maven-surefire-plugin.version>
+        <maven-failsafe-plugin.version>2.22.2</maven-failsafe-plugin.version>
         <github-release-plugin.version>1.1.1</github-release-plugin.version>
         <twitter-maven-plugin.version>1.0.1</twitter-maven-plugin.version>
-        <docker-maven-plugin.version>0.23.0</docker-maven-plugin.version>
         <flink-runtime-scope>provided</flink-runtime-scope>
-        <service.jar>${project.build.finalName}.${project.packaging}</service.jar>
     </properties>
     <dependencies>
         <dependency>
@@ -86,6 +82,36 @@
         </dependency>
         <dependency>
             <groupId>org.apache.flink</groupId>
+            <artifactId>flink-runtime-web_2.11</artifactId>
+            <version>${flink.version}</version>
+            <scope>${flink-runtime-scope}</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.flink</groupId>
+            <artifactId>flink-table-runtime-blink_2.11</artifactId>
+            <version>${flink.version}</version>
+            <scope>${flink-runtime-scope}</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.flink</groupId>
+            <artifactId>flink-table-uber-blink_2.11</artifactId>
+            <version>${flink.version}</version>
+            <scope>${flink-runtime-scope}</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.flink</groupId>
+            <artifactId>flink-table-planner-blink_2.11</artifactId>
+            <version>${flink.version}</version>
+            <scope>${flink-runtime-scope}</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.flink</groupId>
+            <artifactId>flink-table-planner_2.11</artifactId>
+            <version>${flink.version}</version>
+            <scope>${flink-runtime-scope}</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.flink</groupId>
             <artifactId>flink-connector-kafka-0.11_2.11</artifactId>
             <version>${flink.version}</version>
         </dependency>
@@ -93,12 +119,6 @@
             <groupId>org.apache.flink</groupId>
             <artifactId>flink-connector-filesystem_2.11</artifactId>
             <version>${flink.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>com.fasterxml.jackson.core</groupId>
-            <artifactId>jackson-databind</artifactId>
-            <version>${jackson-databind.version}</version>
-            <scope>${flink-runtime-scope}</scope>
         </dependency>
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
@@ -227,18 +247,10 @@
             <plugin>
                 <artifactId>maven-surefire-plugin</artifactId>
                 <version>${maven-surefire-plugin.version}</version>
-                <dependencies>
-                    <dependency>
-                        <groupId>org.junit.platform</groupId>
-                        <artifactId>junit-platform-surefire-provider</artifactId>
-                        <version>${junit-platform-surefire-provider.version}</version>
-                    </dependency>
-                    <dependency>
-                        <groupId>org.junit.jupiter</groupId>
-                        <artifactId>junit-jupiter-engine</artifactId>
-                        <version>${junit-jupiter-engine.version}</version>
-                    </dependency>
-                </dependencies>
+            </plugin>
+            <plugin>
+                <artifactId>maven-failsafe-plugin</artifactId>
+                <version>${maven-failsafe-plugin.version}</version>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -260,62 +272,6 @@
                         </includes>
                     </artifactSet>
                 </configuration>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-dependency-plugin</artifactId>
-                <version>${maven-dependency-plugin.version}</version>
-                <executions>
-                    <execution>
-                        <phase>package</phase>
-                        <goals>
-                            <goal>copy-dependencies</goal>
-                        </goals>
-                        <configuration>
-                            <includeScope>compile</includeScope>
-                            <includeScope>runtime</includeScope>
-                            <excludeScope>test</excludeScope>
-                            <outputDirectory>${project.build.directory}/jars/</outputDirectory>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
-            <plugin>
-                <groupId>io.fabric8</groupId>
-                <artifactId>docker-maven-plugin</artifactId>
-                <version>${docker-maven-plugin.version}</version>
-                <configuration>
-                    <images>
-                        <image>
-                            <registry>docker.io</registry>
-                            <alias>workshop-flink</alias>
-                            <name>workshop-flink:${project.version}</name>
-                            <build>
-                                <dockerFileDir>${project.basedir}/src/main/docker</dockerFileDir>
-                                <filter>${*}</filter>
-                                <assembly>
-                                    <descriptorRef>artifact</descriptorRef>
-                                </assembly>
-                            </build>
-                        </image>
-                    </images>
-                </configuration>
-                <executions>
-                    <execution>
-                        <id>package</id>
-                        <phase>package</phase>
-                        <goals>
-                            <goal>build</goal>
-                        </goals>
-                    </execution>
-                    <execution>
-                        <id>push</id>
-                        <phase>none</phase>
-                        <goals>
-                            <goal>push</goal>
-                        </goals>
-                    </execution>
-                </executions>
             </plugin>
         </plugins>
     </build>

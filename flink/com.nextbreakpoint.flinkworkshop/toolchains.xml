@@ -7,7 +7,7 @@
       <vendor>oracle</vendor>
     </provides>
     <configuration>
-      <jdkHome>/Library/Java/JavaVirtualMachines/jdk1.8.0_191.jdk/Contents/Home</jdkHome>
+      <jdkHome>/usr/local/openjdk-8</jdkHome>
     </configuration>
   </toolchain>
 </toolchains>
