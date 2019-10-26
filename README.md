@@ -36,28 +36,82 @@ The project is distributed under the terms of BSD 3-Clause License.
 
 ## Documentation
 
-Open a terminal and change current directory to swarm.
+Install Docker CE 2.1.x and VirtualBox 6.0.x.
+
+Open a terminal and change directory:
+
+    cd swarm
 
 Create Docker machines:
 
     ./create-machines.sh
 
-Verify machines are running:
+Check machines are running:
 
     docker-machine ls
 
-    NAME                 ACTIVE   DRIVER       STATE     URL                         SWARM   DOCKER        ERRORS
-    workshop-manager     -        virtualbox   Running   tcp://192.168.99.100:2376           v18.09.3-ce   
-    workshop-worker1     -        virtualbox   Running   tcp://192.168.99.101:2376           v18.09.3-ce   
-    workshop-worker2     -        virtualbox   Running   tcp://192.168.99.102:2376           v18.09.3-ce   
+    NAME               ACTIVE   DRIVER       STATE     URL                         SWARM   DOCKER     ERRORS
+    workshop-manager   -        virtualbox   Running   tcp://192.168.99.100:2376           v19.03.4
+    workshop-worker1   -        virtualbox   Running   tcp://192.168.99.101:2376           v19.03.4
+    workshop-worker2   -        virtualbox   Running   tcp://192.168.99.102:2376           v19.03.4
 
 Configure Docker daemon:
 
     ./configure-docker.sh
 
-Verify daemon is running:
+Check daemon is running:
 
     docker-machine ssh workshop-manager docker info
+
+    Client:
+     Debug Mode: false
+
+    Server:
+     Containers: 0
+      Running: 0
+      Paused: 0
+      Stopped: 0
+     Images: 0
+     Server Version: 19.03.4
+     Storage Driver: overlay2
+      Backing Filesystem: extfs
+      Supports d_type: true
+      Native Overlay Diff: true
+     Logging Driver: json-file
+     Cgroup Driver: cgroupfs
+     Plugins:
+      Volume: local
+      Network: bridge host ipvlan macvlan null overlay
+      Log: awslogs fluentd gcplogs gelf journald json-file local logentries splunk syslog
+     Swarm: inactive
+     Runtimes: runc
+     Default Runtime: runc
+     Init Binary: docker-init
+     containerd version: b34a5c8af56e510852c35414db4c1f4fa6172339
+     runc version: 3e425f80a8c931f88e6d94a8c831b9d5aa481657
+     init version: fec3683
+     Security Options:
+      seccomp
+       Profile: default
+     Kernel Version: 4.14.150-boot2docker
+     Operating System: Boot2Docker 19.03.4 (TCL 10.1)
+     OSType: linux
+     Architecture: x86_64
+     CPUs: 1
+     Total Memory: 1.951GiB
+     Name: workshop-manager
+     ID: TEF5:IKFL:FMOY:GMCP:6GNP:GCQU:L2WI:CNYM:JP5F:JJ47:OYTP:VPOZ
+     Docker Root Dir: /mnt/sda1/var/lib/docker
+     Debug Mode: false
+     Registry: https://index.docker.io/v1/
+     Labels:
+      provider=virtualbox
+     Experimental: true
+     Insecure Registries:
+      192.168.99.100:5000
+      127.0.0.0/8
+     Live Restore Enabled: false
+     Product License: Community Engine
 
 Verify daemon config:
 
@@ -92,41 +146,41 @@ Create Docker Swarm:
 
     ./create-swarm.sh
 
-Verify Swarm is running:
+Check Swarm is running:
 
     ./swarm-manager.sh docker node ls
 
-    ID                            HOSTNAME                STATUS              AVAILABILITY        MANAGER STATUS      ENGINE VERSION
-    x18uukmtx9ewtytlcf0bmmlhy *   workshop-manager        Ready               Active              Leader              18.09.3-ce
-    gykya6sg35gf6uphjtmufjud4     workshop-worker1        Ready               Active                                  18.09.3-ce
-    pdraedbqsmacokisq1ayma08f     workshop-worker2        Ready               Active                                  18.09.3-ce
+    ID                            HOSTNAME            STATUS              AVAILABILITY        MANAGER STATUS      ENGINE VERSION
+    xy6u4ypqiw1vrwt229iyaxbhz *   workshop-manager    Ready               Active              Leader              19.03.4
+    x473aw0q6153b61xspdu5vu7y     workshop-worker1    Ready               Active                                  19.03.4
+    7wltmmyi6qbshcl5t8khcd6dx     workshop-worker2    Ready               Active                                  19.03.4
 
 Create overlay network:
 
     ./create-network.sh
 
-Verify workshop network has been created:
+Check workshop network has been created:
 
     ./swarm-manager.sh docker network ls
 
     NETWORK ID          NAME                DRIVER              SCOPE
-    e5f12f246b86        bridge              bridge              local
-    fc9bedb73bf0        docker_gwbridge     bridge              local
-    8755236950a0        host                host                local
-    jj06e7pxydsr        ingress             overlay             swarm
-    aac2389b5947        none                null                local
-    2582blnqoz6m        workshop            overlay             swarm
+    4eeab94637e1        bridge              bridge              local
+    64c438d23485        docker_gwbridge     bridge              local
+    61988f755457        host                host                local
+    e7p527ehbkzw        ingress             overlay             swarm
+    f6fc3ac8b647        none                null                local
+    t0zjjetg1jh5        workshop            overlay             swarm
 
 Create local Docker registry:
 
     ./create-registry.sh
 
-Verify registry is running:
+Check registry is running:
 
     ./swarm-manager.sh docker ps
 
     CONTAINER ID        IMAGE               COMMAND                  CREATED             STATUS              PORTS                    NAMES
-    5826d2efbda3        registry:2          "/entrypoint.sh /etc…"   33 seconds ago      Up 32 seconds       0.0.0.0:5000->5000/tcp   registry
+    6a471e315ce2        registry:2          "/entrypoint.sh /etc…"   5 seconds ago       Up 5 seconds        0.0.0.0:5000->5000/tcp   registry
 
 Build Docker images:
 
@@ -136,35 +190,28 @@ Build workshop Docker image:
 
     ./build-workshop-image.sh
 
-Verify images have been created:
+Check images have been created:
 
     ./swarm-manager.sh docker images
 
-    REPOSITORY                                  TAG                                IMAGE ID            CREATED             SIZE
-    192.168.99.109:5000/workshop-flink-jobs     1.0.0                              eff10741e55b        24 seconds ago      607MB
-    workshop-flink                              1.0.0                              eff10741e55b        24 seconds ago      607MB
-    192.168.99.109:5000/workshop-nodeexporter   1.0                                3a180cf220a3        11 minutes ago      22.9MB
-    workshop-nodeexporter                       1.0                                3a180cf220a3        11 minutes ago      22.9MB
-    192.168.99.109:5000/workshop-prometheus     1.0                                2c409aa9f37a        11 minutes ago      119MB
-    workshop-prometheus                         1.0                                2c409aa9f37a        11 minutes ago      119MB
-    192.168.99.109:5000/workshop-grafana        1.0                                02134dd73dcc        11 minutes ago      241MB
-    workshop-grafana                            1.0                                02134dd73dcc        11 minutes ago      241MB
-    192.168.99.109:5000/workshop-alertmanager   1.0                                9ef9d7440984        11 minutes ago      36.2MB
-    workshop-alertmanager                       1.0                                9ef9d7440984        11 minutes ago      36.2MB
-    192.168.99.109:5000/workshop-flink          1.7.2                              4ca244d2ae3a        11 minutes ago      603MB
-    workshop-flink                              1.7.2                              4ca244d2ae3a        11 minutes ago      603MB
-    192.168.99.109:5000/workshop-kafka          5.0.1                              c947594a937f        14 minutes ago      558MB
-    workshop-kafka                              5.0.1                              c947594a937f        14 minutes ago      558MB
-    192.168.99.109:5000/workshop-zookeeper      3.4.12                             d897a9ddd7d3        15 minutes ago      151MB
-    workshop-zookeeper                          3.4.12                             d897a9ddd7d3        15 minutes ago      151MB
-    flink                                       1.7.2-hadoop28-scala_2.11-alpine   5b894ae0b905        5 days ago          429MB
-    registry                                    2                                  f32a97de94e1        5 weeks ago         25.8MB
-    grafana/grafana                             5.4.3                              d0454da13c84        3 months ago        240MB
-    confluentinc/cp-kafka                       5.0.1                              5467234daea9        5 months ago        557MB
-    prom/alertmanager                           v0.15.2                            a21bf3a63620        8 months ago        36.2MB
-    prom/prometheus                             v2.3.2                             0915a968017e        9 months ago        119MB
-    zookeeper                                   3.4.12                             cfed220ec48b        9 months ago        148MB
-    prom/node-exporter                          v0.16.0                            188af75e2de0        11 months ago       22.9MB
+    REPOSITORY                                  TAG                 IMAGE ID            CREATED             SIZE
+    192.168.99.100:5000/workshop-flink-jobs     1.1.0               bc332384f631        About a minute ago   554MB
+    192.168.99.100:5000/workshop-kafka          5.3.1               327bbddc08e2        20 minutes ago       590MB
+    192.168.99.100:5000/workshop-zookeeper      3.5.6               0a00c2f647ac        20 minutes ago       241MB
+    192.168.99.100:5000/workshop-nodeexporter   v0.18.1             146ec2fb7ed9        21 minutes ago       22.9MB
+    192.168.99.100:5000/workshop-prometheus     v2.13.1             160b91a27b5f        21 minutes ago       129MB
+    192.168.99.100:5000/workshop-grafana        6.4.3               a4d9f00a263d        21 minutes ago       206MB
+    192.168.99.100:5000/workshop-alertmanager   v0.19.0             4b73369112e5        22 minutes ago       53.2MB
+    192.168.99.100:5000/workshop-flink          1.9.0               ae32e42089a2        22 minutes ago       741MB
+    zookeeper                                   3.5.6               e41846a619f5        5 days ago           224MB
+    flink                                       1.9.0-scala_2.11    8fde30155334        7 days ago           544MB
+    maven                                       3.6.2-jdk-8         99eb11a22d10        7 days ago           499MB
+    prom/prometheus                             v2.13.1             2c8e464e47f4        9 days ago           129MB
+    grafana/grafana                             6.4.3               a532fe3b344a        10 days ago          206MB
+    confluentinc/cp-kafka                       5.3.1               be6286eb3417        7 weeks ago          590MB
+    prom/alertmanager                           v0.19.0             30594e96cbe8        7 weeks ago          53.2MB
+    prom/node-exporter                          v0.18.1             e5a616e4b9cf        4 months ago         22.9MB
+    registry                                    2                   f32a97de94e1        7 months ago         25.8MB
 
 Deploy the servers:
 
@@ -178,7 +225,7 @@ Deploy the Flink jobs:
 
     ./swarm-manager.sh ./deploy-flink.sh
 
-Verify the stacks has been created:
+Check stack has been created:
 
     ./swarm-manager.sh docker stack ls
 
@@ -186,30 +233,30 @@ Verify the stacks has been created:
     servers             10                  Swarm
     flink               9                   Swarm
 
-Verify the services are running:
+Check services are running:
 
     ./swarm-manager.sh docker service ls
 
     ID                  NAME                          MODE                REPLICAS            IMAGE                                                PORTS
-    yk73ly7p3d9j        flink_aggregate-cli           replicated          1/1                 192.168.99.109:5000/workshop-flink-jobs:1.0.0   
-    xqa97ok6gvf5        flink_aggregate-jobmanager    replicated          1/1                 192.168.99.109:5000/workshop-flink:1.7.2             *:28081->8081/tcp
-    wh6c56a55j0t        flink_aggregate-taskmanager   replicated          1/1                 192.168.99.109:5000/workshop-flink:1.7.2             
-    vt61a43qmwpq        flink_generate-cli            replicated          1/1                 192.168.99.109:5000/workshop-flink-jobs:1.0.0   
-    qvu1f3896gs4        flink_generate-jobmanager     replicated          1/1                 192.168.99.109:5000/workshop-flink:1.7.2             *:18081->8081/tcp
-    8kcpid7mwk5m        flink_generate-taskmanager    replicated          1/1                 192.168.99.109:5000/workshop-flink:1.7.2             
-    ottxwvigtvfv        flink_print-cli               replicated          1/1                 192.168.99.109:5000/workshop-flink-jobs:1.0.0   
-    34nk9k658fka        flink_print-jobmanager        replicated          1/1                 192.168.99.109:5000/workshop-flink:1.7.2             *:38081->8081/tcp
-    e4uux5nnbomt        flink_print-taskmanager       replicated          1/1                 192.168.99.109:5000/workshop-flink:1.7.2             
-    svbmw3i1rr0v        servers_alertmanager          replicated          1/1                 192.168.99.109:5000/workshop-alertmanager:1.0        *:9093->9093/tcp
-    hco41sxqhcc1        servers_cadvisor              global              3/3                 google/cadvisor:latest                               
-    3zvnubeifovv        servers_dockerd-exporter      global              3/3                 stefanprodan/caddy:latest                            
-    t8dastcax40r        servers_grafana               replicated          1/1                 192.168.99.109:5000/workshop-grafana:1.0             *:8081->3000/tcp
-    lgpc9vjaqdow        servers_graphite              replicated          1/1                 graphiteapp/graphite-statsd:latest                   *:2003->2003/tcp, *:8080->80/tcp
-    z9aulmzyf0h4        servers_kafka                 replicated          1/1                 192.168.99.109:5000/workshop-kafka:5.0.1             *:9092->9092/tcp
-    h1k5lsqtw8pz        servers_node-exporter         global              3/3                 192.168.99.109:5000/workshop-nodeexporter:1.0        
-    gdv8zewlx6xf        servers_prometheus            replicated          1/1                 192.168.99.109:5000/workshop-prometheus:1.0          *:9090->9090/tcp
-    vncbw3xx4h2n        servers_unsee                 replicated          1/1                 cloudflare/unsee:v0.8.0                              
-    mxaxxtvmw3p6        servers_zookeeper             replicated          1/1                 192.168.99.109:5000/workshop-zookeeper:3.4.12        *:2181->2181/tcp
+    yk73ly7p3d9j        flink_aggregate-cli           replicated          1/1                 192.168.99.100:5000/workshop-flink-jobs:1.1.0   
+    xqa97ok6gvf5        flink_aggregate-jobmanager    replicated          1/1                 192.168.99.100:5000/workshop-flink:1.9.0             *:28081->8081/tcp
+    wh6c56a55j0t        flink_aggregate-taskmanager   replicated          1/1                 192.168.99.100:5000/workshop-flink:1.9.0             
+    vt61a43qmwpq        flink_generate-cli            replicated          1/1                 192.168.99.100:5000/workshop-flink-jobs:1.1.0   
+    qvu1f3896gs4        flink_generate-jobmanager     replicated          1/1                 192.168.99.100:5000/workshop-flink:1.9.0             *:18081->8081/tcp
+    8kcpid7mwk5m        flink_generate-taskmanager    replicated          1/1                 192.168.99.100:5000/workshop-flink:1.9.0             
+    ottxwvigtvfv        flink_print-cli               replicated          1/1                 192.168.99.100:5000/workshop-flink-jobs:1.1.0   
+    34nk9k658fka        flink_print-jobmanager        replicated          1/1                 192.168.99.100:5000/workshop-flink:1.9.0             *:38081->8081/tcp
+    e4uux5nnbomt        flink_print-taskmanager       replicated          1/1                 192.168.99.100:5000/workshop-flink:1.9.0             
+    owm1pgp26324        servers_alertmanager          replicated          1/1                 192.168.99.100:5000/workshop-alertmanager:v0.19.0    *:9093->9093/tcp
+    oer7uyx11uth        servers_cadvisor              global              3/3                 google/cadvisor:latest
+    5fydyjn550u9        servers_dockerd-exporter      global              3/3                 stefanprodan/caddy:latest
+    xfcs5vgrsl4i        servers_grafana               replicated          1/1                 192.168.99.100:5000/workshop-grafana:6.4.3           *:8081->3000/tcp
+    jput70dfcn9w        servers_graphite              replicated          1/1                 graphiteapp/graphite-statsd:latest                   *:2003->2003/tcp, *:8080->80/tcp
+    jgbeumfauag4        servers_kafka                 replicated          1/1                 192.168.99.100:5000/workshop-kafka:5.3.1             *:9092->9092/tcp
+    unejdnofjedp        servers_node-exporter         global              3/3                 192.168.99.100:5000/workshop-nodeexporter:v0.18.1
+    x0s61ya0jvae        servers_prometheus            replicated          1/1                 192.168.99.100:5000/workshop-prometheus:v2.13.1      *:9090->9090/tcp
+    s9epz2ciupt3        servers_unsee                 replicated          1/1                 cloudflare/unsee:v0.9.2
+    c35jrh8kqf3o        servers_zookeeper             replicated          1/1                 192.168.99.100:5000/workshop-zookeeper:3.5.6         *:2181->2181/tcp
 
 Tail the logs of Generate job:
 
@@ -228,8 +275,8 @@ Tail the logs of Print job:
 
 Consumer messages from input topic:
 
-    docker run --rm -it confluentinc/cp-kafka:5.0.1 kafka-console-consumer --bootstrap-server 192.168.99.100:9092 --topic test-input --from-beginning
+    docker run --rm -it confluentinc/cp-kafka:5.3.1 kafka-console-consumer --bootstrap-server 192.168.99.100:9092 --topic test-input --from-beginning
 
 Consumer messages from output topic:
 
-    docker run --rm -it confluentinc/cp-kafka:5.0.1 kafka-console-consumer --bootstrap-server 192.168.99.100:9092 --topic test-output --from-beginning
+    docker run --rm -it confluentinc/cp-kafka:5.3.1 kafka-console-consumer --bootstrap-server 192.168.99.100:9092 --topic test-output --from-beginning

@@ -8,11 +8,9 @@ ROOT_PATH=$(pwd)/../flink/com.nextbreakpoint.flinkworkshop
 
 pushd $ROOT_PATH
 
-mvn clean package
+docker build -t $(docker-machine ip workshop-manager):5000/workshop-flink-jobs:${FLINK_JOBS_VERSION} --build-arg flink_version=${FLINK_VERSION} --build-arg scala_version=${SCALA_VERSION} .
 
 popd
-
-docker tag workshop-flink:${FLINK_JOBS_VERSION} $(docker-machine ip workshop-manager):5000/workshop-flink-jobs:${FLINK_JOBS_VERSION}
 
 docker push $(docker-machine ip workshop-manager):5000/workshop-flink-jobs:${FLINK_JOBS_VERSION}
 
