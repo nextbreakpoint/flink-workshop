@@ -25,31 +25,26 @@ public class SensorRichWindowFunction extends RichWindowFunction<Double, SensorD
     private transient Map<String, Counter> counters = new HashMap<>();
     private transient Map<String, DoubleGauge> gauges = new HashMap<>();
 
-    private transient String counterPrefix;
-    private transient String gaugePrefix;
-
     public void open(Configuration parameters) throws Exception {
         counters = new HashMap<>();
         gauges = new HashMap<>();
-        counterPrefix = "sensor.counter." + getRuntimeContext().getIndexOfThisSubtask() + ".";
-        gaugePrefix = "sensor.gauge." + getRuntimeContext().getIndexOfThisSubtask() + ".";
         super.open(parameters);
     }
 
     @Override
     public void apply(String key, TimeWindow window, Iterable<Double> input, Collector<SensorData> out) {
-        final String counterName = counterPrefix + key;
-        final String gaugeName = gaugePrefix + key;
+        final String countMetricName = "sensor." + key + ".count";
+        final String valueMetricName = "sensor." + key + ".value";
         final MetricGroup metricGroup = getRuntimeContext().getMetricGroup();
-        final Counter counter = counters.computeIfAbsent(counterName, name -> {
+        final Counter counter = counters.computeIfAbsent(countMetricName, name -> {
             final Counter metric = metricGroup.counter(name);
-            final String counterMetric = metricGroup.getMetricIdentifier(counterName);
+            final String counterMetric = metricGroup.getMetricIdentifier(countMetricName);
             log.info("Created metric " + counterMetric);
             return metric;
         });
-        final DoubleGauge gauge = gauges.computeIfAbsent(gaugeName, name -> {
-            final DoubleGauge metric = metricGroup.gauge(gaugeName, new DoubleGauge());
-            final String gaugeMetric = metricGroup.getMetricIdentifier(gaugeName);
+        final DoubleGauge gauge = gauges.computeIfAbsent(valueMetricName, name -> {
+            final DoubleGauge metric = metricGroup.gauge(valueMetricName, new DoubleGauge());
+            final String gaugeMetric = metricGroup.getMetricIdentifier(valueMetricName);
             log.info("Created metric " + gaugeMetric);
             return metric;
         });

@@ -1,7 +1,7 @@
 package com.nextbreakpoint.flink.sensor;
 
 import org.apache.flink.api.java.tuple.Tuple2;
-import org.apache.flink.streaming.api.functions.source.SourceFunction;
+import org.apache.flink.streaming.api.functions.source.ParallelSourceFunction;
 import org.apache.flink.streaming.api.watermark.Watermark;
 
 import java.time.Instant;
@@ -13,13 +13,12 @@ import java.util.UUID;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
-public class RandomSensorDataSource implements SourceFunction<SensorData> {
+public class RandomSensorDataSource implements ParallelSourceFunction<SensorData> {
     private volatile boolean running;
 
     @Override
     public void run(SourceContext<SensorData> sourceContext) {
         running = true;
-
         final List<Tuple2<Double, UUID>> sensors = IntStream.range(0, 10)
                 .mapToObj(i -> new Tuple2<>(Math.random() * 100, UUID.randomUUID())).collect(Collectors.toList());
 
