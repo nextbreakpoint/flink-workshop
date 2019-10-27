@@ -1,0 +1,37 @@
+global:
+  scrape_interval:     15s
+  evaluation_interval: 15s
+
+  external_labels:
+    monitor: 'prometheus'
+
+rule_files:
+  # - "swarm_node.rules.yml"
+  # - "swarm_task.rules.yml"
+
+alerting:
+  alertmanagers:
+  # - static_configs:
+  #   - targets:
+  #     - alertmanager:9093
+
+scrape_configs:
+  - job_name: 'prometheus'
+    static_configs:
+      - targets: ['localhost:9090']
+
+  - job_name: 'kafka'
+    static_configs:
+      - targets: ['kafka:7070']
+
+  - job_name: 'zookeeper'
+    static_configs:
+      - targets: ['zookeeper:7070']
+
+  - job_name: 'jobmanager'
+    static_configs:
+      - targets: ['jobmanager:9990']
+
+  - job_name: 'taskmanager'
+    static_configs:
+      - targets: ['taskmanager1:9990','taskmanager2:9990']

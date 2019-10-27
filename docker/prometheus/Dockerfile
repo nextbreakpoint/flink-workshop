@@ -1,18 +1,14 @@
-FROM prom/prometheus:v2.3.2
-# https://hub.docker.com/r/prom/prometheus/tags/
+FROM prom/prometheus:v2.13.1
 
-ENV WEAVE_TOKEN=none
 ENV ENVIRONMENT=dev
 
 USER root
 
-COPY conf /etc/prometheus/
-COPY rules /etc/prometheus/
+COPY docker-entrypoint.sh /etc/prometheus/docker-entrypoint.sh
+COPY prometheus.yml /etc/prometheus/prometheus.yml
 
 RUN chmod a+x /etc/prometheus/docker-entrypoint.sh
 
 ENTRYPOINT [ "/etc/prometheus/docker-entrypoint.sh" ]
-CMD        [ "--config.file=/etc/prometheus/prometheus.yml", \
-             "--storage.tsdb.path=/prometheus", \
-             "--web.console.libraries=/etc/prometheus/console_libraries", \
-             "--web.console.templates=/etc/prometheus/consoles" ]
+
+CMD [ "--config.file=/etc/prometheus/prometheus.yml", "--storage.tsdb.path=/prometheus", "--web.console.libraries=/etc/prometheus/console_libraries", "--web.console.templates=/etc/prometheus/consoles", "--storage.tsdb.retention=24h" ]
