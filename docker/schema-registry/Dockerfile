@@ -1,4 +1,4 @@
-FROM confluentinc/cp-kafka:5.3.1
+FROM confluentinc/cp-schema-registry:5.3.1
 
 #RUN apt update && apt install -y wget
 

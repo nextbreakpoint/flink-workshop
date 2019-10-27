@@ -77,6 +77,7 @@
       ],
       "thresholds": [],
       "timeFrom": null,
+      "timeRegions": [],
       "timeShift": null,
       "title": "Kafka counters",
       "tooltip": {
@@ -109,7 +110,11 @@
           "min": null,
           "show": true
         }
-      ]
+      ],
+      "yaxis": {
+        "align": false,
+        "alignLevel": null
+      }
     },
     {
       "aliasColors": {},
@@ -148,7 +153,6 @@
       "steppedLine": false,
       "targets": [
         {
-          "$$hashKey": "object:440",
           "expr": "sum(kafka_server_sessionexpirelistener_zookeeperdisconnects_total)",
           "format": "time_series",
           "intervalFactor": 1,
@@ -156,7 +160,6 @@
           "refId": "A"
         },
         {
-          "$$hashKey": "object:461",
           "expr": "sum(kafka_server_sessionexpirelistener_zookeeperauthfailures_total)",
           "format": "time_series",
           "intervalFactor": 1,
@@ -164,7 +167,6 @@
           "refId": "B"
         },
         {
-          "$$hashKey": "object:482",
           "expr": "sum(kafka_server_sessionexpirelistener_zookeepersaslauthentications_total)",
           "format": "time_series",
           "intervalFactor": 1,
@@ -174,6 +176,7 @@
       ],
       "thresholds": [],
       "timeFrom": null,
+      "timeRegions": [],
       "timeShift": null,
       "title": "Zookeeper counters",
       "tooltip": {
@@ -206,7 +209,11 @@
           "min": null,
           "show": true
         }
-      ]
+      ],
+      "yaxis": {
+        "align": false,
+        "alignLevel": null
+      }
     },
     {
       "aliasColors": {},
@@ -245,7 +252,6 @@
       "steppedLine": false,
       "targets": [
         {
-          "$$hashKey": "object:799",
           "expr": "sum(kafka_server_brokertopicmetrics_bytesin_total)",
           "format": "time_series",
           "intervalFactor": 1,
@@ -253,7 +259,6 @@
           "refId": "A"
         },
         {
-          "$$hashKey": "object:820",
           "expr": "sum(kafka_server_brokertopicmetrics_bytesout_total)",
           "format": "time_series",
           "intervalFactor": 1,
@@ -263,6 +268,7 @@
       ],
       "thresholds": [],
       "timeFrom": null,
+      "timeRegions": [],
       "timeShift": null,
       "title": "Kafka bytes",
       "tooltip": {
@@ -295,7 +301,11 @@
           "min": null,
           "show": true
         }
-      ]
+      ],
+      "yaxis": {
+        "align": false,
+        "alignLevel": null
+      }
     },
     {
       "aliasColors": {},
@@ -334,7 +344,6 @@
       "steppedLine": false,
       "targets": [
         {
-          "$$hashKey": "object:1006",
           "expr": "sum(kafka_log_size{topic=~\"abstraction-enriched-users-.*\"})",
           "format": "time_series",
           "interval": "",
@@ -343,7 +352,6 @@
           "refId": "A"
         },
         {
-          "$$hashKey": "object:1029",
           "expr": "sum(kafka_log_size{topic=~\"abstraction-user-events-.*\"})",
           "format": "time_series",
           "interval": "",
@@ -352,7 +360,6 @@
           "refId": "B"
         },
         {
-          "$$hashKey": "object:1050",
           "expr": "sum(kafka_log_size{topic=~\"spoor-bridge-.*\"})",
           "format": "time_series",
           "interval": "",
@@ -361,7 +368,6 @@
           "refId": "C"
         },
         {
-          "$$hashKey": "object:1071",
           "expr": "sum(kafka_log_size{topic=~\"spoor-by-impression-.*\"})",
           "format": "time_series",
           "interval": "",
@@ -372,6 +378,7 @@
       ],
       "thresholds": [],
       "timeFrom": null,
+      "timeRegions": [],
       "timeShift": null,
       "title": "Kafka topics",
       "tooltip": {
@@ -404,9 +411,14 @@
           "min": null,
           "show": true
         }
-      ]
+      ],
+      "yaxis": {
+        "align": false,
+        "alignLevel": null
+      }
     }
   ],
+  "refresh": "30s",
   "schemaVersion": 16,
   "style": "dark",
   "tags": [],
@@ -414,7 +426,7 @@
     "list": []
   },
   "time": {
-    "from": "now-6h",
+    "from": "now-30m",
     "to": "now"
   },
   "timepicker": {
@@ -443,7 +455,7 @@
     ]
   },
   "timezone": "",
-  "title": "Kafka monitoring",
+  "title": "Kafka Dashboard",
   "uid": "0Oa7cXKik",
-  "version": 3
+  "version": 2
 }

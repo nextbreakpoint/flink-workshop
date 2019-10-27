@@ -15,43 +15,28 @@
   "editable": true,
   "gnetId": null,
   "graphTooltip": 0,
-  "iteration": 1536831886605,
   "links": [],
   "panels": [
     {
-      "collapsed": false,
+      "aliasColors": {},
+      "bars": false,
+      "dashLength": 10,
+      "dashes": false,
+      "datasource": "Prometheus",
+      "fill": 1,
+      "fillGradient": 0,
       "gridPos": {
-        "h": 1,
-        "w": 24,
+        "h": 8,
+        "w": 12,
         "x": 0,
         "y": 0
       },
-      "id": 74,
-      "panels": [],
-      "title": "Flink Task Managers",
-      "type": "row"
-    },
-    {
-      "aliasColors": {},
-      "bars": false,
-      "dashLength": 10,
-      "dashes": false,
-      "datasource": "Graphite",
-      "fill": 1,
-      "gridPos": {
-        "h": 9,
-        "w": 24,
-        "x": 0,
-        "y": 1
-      },
-      "id": 25,
+      "id": 83,
       "legend": {
         "alignAsTable": true,
         "avg": false,
         "current": true,
-        "hideEmpty": true,
-        "hideZero": true,
-        "max": true,
+        "max": false,
         "min": false,
         "rightSide": true,
         "show": true,
@@ -62,48 +47,34 @@
       "linewidth": 1,
       "links": [],
       "nullPointMode": "null",
-      "percentage": true,
-      "pointradius": 5,
+      "options": {
+        "dataLinks": []
+      },
+      "percentage": false,
+      "pointradius": 2,
       "points": false,
       "renderer": "flot",
       "seriesOverrides": [],
       "spaceLength": 10,
-      "stack": true,
+      "stack": false,
       "steppedLine": false,
       "targets": [
         {
-          "hide": false,
-          "refCount": 0,
-          "refId": "B",
-          "target": "groupByNode(nextbreakpoint.*-flink.$env.*.*.taskmanager.*.Status.JVM.Memory.Heap.Used, 3, 'avg')",
-          "textEditor": true
-        },
-        {
-          "refCount": 0,
-          "refId": "A",
-          "target": "groupByNode(nextbreakpoint.*-flink.$env.*.*.taskmanager.*.Status.JVM.Memory.Heap.Max, 3, 'avg')",
-          "textEditor": true
-        },
-        {
-          "refCount": 0,
-          "refId": "C",
-          "target": "groupByNode(nextbreakpoint.*-flink.$env.*.*.taskmanager.*.Status.JVM.Memory.Direct.MemoryUsed, 3, 'avg')",
-          "textEditor": true
-        },
-        {
-          "refCount": 0,
-          "refId": "D",
-          "target": "groupByNode(nextbreakpoint.*-flink.$env.*.*.taskmanager.*.Status.JVM.Memory.Direct.TotalCapacity, 3, 'avg')",
-          "textEditor": true
+          "expr": "flink_jobmanager_numRunningJobs",
+          "format": "time_series",
+          "intervalFactor": 1,
+          "legendFormat": "Count",
+          "refId": "A"
         }
       ],
       "thresholds": [],
       "timeFrom": null,
+      "timeRegions": [],
       "timeShift": null,
-      "title": "Flink Task Managers Heap Memory",
+      "title": "Running Jobs",
       "tooltip": {
         "shared": true,
-        "sort": 2,
+        "sort": 0,
         "value_type": "individual"
       },
       "type": "graph",
@@ -116,11 +87,11 @@
       },
       "yaxes": [
         {
-          "format": "decbytes",
+          "format": "short",
           "label": null,
           "logBase": 1,
           "max": null,
-          "min": "0",
+          "min": null,
           "show": true
         },
         {
@@ -142,22 +113,21 @@
       "bars": false,
       "dashLength": 10,
       "dashes": false,
-      "datasource": "Graphite",
+      "datasource": "Prometheus",
       "fill": 1,
+      "fillGradient": 0,
       "gridPos": {
-        "h": 9,
-        "w": 24,
-        "x": 0,
-        "y": 10
+        "h": 8,
+        "w": 12,
+        "x": 12,
+        "y": 0
       },
-      "id": 72,
+      "id": 84,
       "legend": {
         "alignAsTable": true,
         "avg": false,
         "current": true,
-        "hideEmpty": true,
-        "hideZero": true,
-        "max": true,
+        "max": false,
         "min": false,
         "rightSide": true,
         "show": true,
@@ -168,35 +138,41 @@
       "linewidth": 1,
       "links": [],
       "nullPointMode": "null",
-      "percentage": true,
-      "pointradius": 5,
+      "options": {
+        "dataLinks": []
+      },
+      "percentage": false,
+      "pointradius": 2,
       "points": false,
       "renderer": "flot",
       "seriesOverrides": [],
       "spaceLength": 10,
-      "stack": true,
+      "stack": false,
       "steppedLine": false,
       "targets": [
         {
-          "refCount": 0,
-          "refId": "C",
-          "target": "groupByNode(nextbreakpoint.*-flink.$env.*.*.taskmanager.*.Status.JVM.Memory.Direct.MemoryUsed, 3, 'avg')",
-          "textEditor": true
+          "expr": "flink_jobmanager_taskSlotsTotal",
+          "format": "time_series",
+          "intervalFactor": 1,
+          "legendFormat": "Total",
+          "refId": "A"
         },
         {
-          "refCount": 0,
-          "refId": "D",
-          "target": "groupByNode(nextbreakpoint.*-flink.$env.*.*.taskmanager.*.Status.JVM.Memory.Direct.TotalCapacity, 3, 'avg')",
-          "textEditor": true
+          "expr": "flink_jobmanager_taskSlotsAvailable",
+          "format": "time_series",
+          "intervalFactor": 1,
+          "legendFormat": "Available ",
+          "refId": "B"
         }
       ],
       "thresholds": [],
       "timeFrom": null,
+      "timeRegions": [],
       "timeShift": null,
-      "title": "Flink Task Managers Direct Memory",
+      "title": "Task Slots",
       "tooltip": {
         "shared": true,
-        "sort": 2,
+        "sort": 0,
         "value_type": "individual"
       },
       "type": "graph",
@@ -209,11 +185,11 @@
       },
       "yaxes": [
         {
-          "format": "decbytes",
+          "format": "short",
           "label": null,
           "logBase": 1,
           "max": null,
-          "min": "0",
+          "min": null,
           "show": true
         },
         {
@@ -235,13 +211,14 @@
       "bars": false,
       "dashLength": 10,
       "dashes": false,
-      "datasource": "Graphite",
+      "datasource": "Prometheus",
       "fill": 1,
+      "fillGradient": 0,
       "gridPos": {
         "h": 9,
-        "w": 24,
+        "w": 12,
         "x": 0,
-        "y": 19
+        "y": 8
       },
       "id": 71,
       "legend": {
@@ -261,7 +238,10 @@
       "linewidth": 1,
       "links": [],
       "nullPointMode": "null",
-      "percentage": true,
+      "options": {
+        "dataLinks": []
+      },
+      "percentage": false,
       "pointradius": 5,
       "points": false,
       "renderer": "flot",
@@ -271,16 +251,18 @@
       "steppedLine": false,
       "targets": [
         {
-          "refCount": 0,
-          "refId": "B",
-          "target": "groupByNode(nextbreakpoint.*-flink.$env.*.*.taskmanager.*.Status.JVM.CPU.Load, 3, 'avg')",
-          "textEditor": false
+          "expr": "flink_jobmanager_Status_JVM_CPU_Load",
+          "format": "time_series",
+          "intervalFactor": 1,
+          "legendFormat": "{{host}} - Load",
+          "refId": "A"
         }
       ],
       "thresholds": [],
       "timeFrom": null,
+      "timeRegions": [],
       "timeShift": null,
-      "title": "Flink Task Managers CPU",
+      "title": "Job Managers CPU",
       "tooltip": {
         "shared": true,
         "sort": 2,
@@ -309,6 +291,106 @@
           "logBase": 1,
           "max": null,
           "min": null,
+          "show": false
+        }
+      ],
+      "yaxis": {
+        "align": false,
+        "alignLevel": null
+      }
+    },
+    {
+      "aliasColors": {},
+      "bars": false,
+      "dashLength": 10,
+      "dashes": false,
+      "datasource": "Prometheus",
+      "fill": 1,
+      "fillGradient": 0,
+      "gridPos": {
+        "h": 9,
+        "w": 12,
+        "x": 12,
+        "y": 8
+      },
+      "id": 25,
+      "legend": {
+        "alignAsTable": true,
+        "avg": false,
+        "current": true,
+        "hideEmpty": true,
+        "hideZero": true,
+        "max": true,
+        "min": false,
+        "rightSide": true,
+        "show": true,
+        "total": false,
+        "values": true
+      },
+      "lines": true,
+      "linewidth": 1,
+      "links": [],
+      "nullPointMode": "null",
+      "options": {
+        "dataLinks": []
+      },
+      "percentage": false,
+      "pointradius": 5,
+      "points": false,
+      "renderer": "flot",
+      "seriesOverrides": [],
+      "spaceLength": 10,
+      "stack": true,
+      "steppedLine": false,
+      "targets": [
+        {
+          "expr": "flink_jobmanager_Status_JVM_Memory_Heap_Used",
+          "format": "time_series",
+          "intervalFactor": 1,
+          "legendFormat": "{{host}} - Used",
+          "refId": "A"
+        },
+        {
+          "expr": "flink_jobmanager_Status_JVM_Memory_Heap_Max",
+          "format": "time_series",
+          "intervalFactor": 1,
+          "legendFormat": "{{host}} - Max",
+          "refId": "B"
+        }
+      ],
+      "thresholds": [],
+      "timeFrom": null,
+      "timeRegions": [],
+      "timeShift": null,
+      "title": "Job Managers Heap Memory",
+      "tooltip": {
+        "shared": true,
+        "sort": 2,
+        "value_type": "individual"
+      },
+      "type": "graph",
+      "xaxis": {
+        "buckets": null,
+        "mode": "time",
+        "name": null,
+        "show": true,
+        "values": []
+      },
+      "yaxes": [
+        {
+          "format": "decbytes",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": "0",
+          "show": true
+        },
+        {
+          "format": "short",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
           "show": true
         }
       ],
@@ -322,32 +404,429 @@
       "bars": false,
       "dashLength": 10,
       "dashes": false,
-      "datasource": "Graphite",
+      "datasource": "Prometheus",
       "fill": 1,
+      "fillGradient": 0,
       "gridPos": {
-        "h": 8,
+        "h": 9,
         "w": 12,
         "x": 0,
-        "y": 28
+        "y": 17
       },
-      "id": 75,
+      "id": 85,
       "legend": {
-        "alignAsTable": false,
+        "alignAsTable": true,
         "avg": false,
-        "current": false,
+        "current": true,
         "hideEmpty": true,
         "hideZero": true,
-        "max": false,
+        "max": true,
         "min": false,
-        "rightSide": false,
-        "show": false,
+        "rightSide": true,
+        "show": true,
         "total": false,
-        "values": false
+        "values": true
       },
       "lines": true,
       "linewidth": 1,
       "links": [],
       "nullPointMode": "null",
+      "options": {
+        "dataLinks": []
+      },
+      "percentage": false,
+      "pointradius": 5,
+      "points": false,
+      "renderer": "flot",
+      "seriesOverrides": [],
+      "spaceLength": 10,
+      "stack": true,
+      "steppedLine": false,
+      "targets": [
+        {
+          "expr": "flink_taskmanager_Status_JVM_CPU_Load",
+          "format": "time_series",
+          "intervalFactor": 1,
+          "legendFormat": "{{host}} - Load",
+          "refId": "A"
+        }
+      ],
+      "thresholds": [],
+      "timeFrom": null,
+      "timeRegions": [],
+      "timeShift": null,
+      "title": "Task Managers CPU",
+      "tooltip": {
+        "shared": true,
+        "sort": 2,
+        "value_type": "individual"
+      },
+      "type": "graph",
+      "xaxis": {
+        "buckets": null,
+        "mode": "time",
+        "name": null,
+        "show": true,
+        "values": []
+      },
+      "yaxes": [
+        {
+          "format": "percentunit",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": "0",
+          "show": true
+        },
+        {
+          "format": "short",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": false
+        }
+      ],
+      "yaxis": {
+        "align": false,
+        "alignLevel": null
+      }
+    },
+    {
+      "aliasColors": {},
+      "bars": false,
+      "dashLength": 10,
+      "dashes": false,
+      "datasource": "Prometheus",
+      "fill": 1,
+      "fillGradient": 0,
+      "gridPos": {
+        "h": 9,
+        "w": 12,
+        "x": 12,
+        "y": 17
+      },
+      "id": 86,
+      "legend": {
+        "alignAsTable": true,
+        "avg": false,
+        "current": true,
+        "hideEmpty": true,
+        "hideZero": true,
+        "max": true,
+        "min": false,
+        "rightSide": true,
+        "show": true,
+        "total": false,
+        "values": true
+      },
+      "lines": true,
+      "linewidth": 1,
+      "links": [],
+      "nullPointMode": "null",
+      "options": {
+        "dataLinks": []
+      },
+      "percentage": false,
+      "pointradius": 5,
+      "points": false,
+      "renderer": "flot",
+      "seriesOverrides": [],
+      "spaceLength": 10,
+      "stack": true,
+      "steppedLine": false,
+      "targets": [
+        {
+          "expr": "flink_taskmanager_Status_JVM_Memory_Heap_Used",
+          "format": "time_series",
+          "intervalFactor": 1,
+          "legendFormat": "{{host}} - Used",
+          "refId": "A"
+        },
+        {
+          "expr": "flink_taskmanager_Status_JVM_Memory_Heap_Max",
+          "format": "time_series",
+          "intervalFactor": 1,
+          "legendFormat": "{{host}} - Max",
+          "refId": "B"
+        }
+      ],
+      "thresholds": [],
+      "timeFrom": null,
+      "timeRegions": [],
+      "timeShift": null,
+      "title": "Task Managers Heap Memory",
+      "tooltip": {
+        "shared": true,
+        "sort": 2,
+        "value_type": "individual"
+      },
+      "type": "graph",
+      "xaxis": {
+        "buckets": null,
+        "mode": "time",
+        "name": null,
+        "show": true,
+        "values": []
+      },
+      "yaxes": [
+        {
+          "format": "decbytes",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": "0",
+          "show": true
+        },
+        {
+          "format": "short",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        }
+      ],
+      "yaxis": {
+        "align": false,
+        "alignLevel": null
+      }
+    },
+    {
+      "aliasColors": {},
+      "bars": false,
+      "dashLength": 10,
+      "dashes": false,
+      "datasource": "Prometheus",
+      "fill": 1,
+      "fillGradient": 0,
+      "gridPos": {
+        "h": 9,
+        "w": 12,
+        "x": 0,
+        "y": 26
+      },
+      "id": 72,
+      "legend": {
+        "alignAsTable": true,
+        "avg": false,
+        "current": true,
+        "hideEmpty": true,
+        "hideZero": true,
+        "max": true,
+        "min": false,
+        "rightSide": true,
+        "show": true,
+        "total": false,
+        "values": true
+      },
+      "lines": true,
+      "linewidth": 1,
+      "links": [],
+      "nullPointMode": "null",
+      "options": {
+        "dataLinks": []
+      },
+      "percentage": false,
+      "pointradius": 5,
+      "points": false,
+      "renderer": "flot",
+      "seriesOverrides": [],
+      "spaceLength": 10,
+      "stack": true,
+      "steppedLine": false,
+      "targets": [
+        {
+          "expr": "flink_taskmanager_Status_JVM_Memory_Direct_MemoryUsed",
+          "format": "time_series",
+          "intervalFactor": 1,
+          "legendFormat": "{{host}} - Used",
+          "refId": "A"
+        },
+        {
+          "expr": "flink_taskmanager_Status_JVM_Memory_Direct_TotalCapacity",
+          "format": "time_series",
+          "intervalFactor": 1,
+          "legendFormat": "{{host}} - Capacity",
+          "refId": "B"
+        }
+      ],
+      "thresholds": [],
+      "timeFrom": null,
+      "timeRegions": [],
+      "timeShift": null,
+      "title": "Task Managers Direct Memory",
+      "tooltip": {
+        "shared": true,
+        "sort": 2,
+        "value_type": "individual"
+      },
+      "type": "graph",
+      "xaxis": {
+        "buckets": null,
+        "mode": "time",
+        "name": null,
+        "show": true,
+        "values": []
+      },
+      "yaxes": [
+        {
+          "format": "decbytes",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": "0",
+          "show": true
+        },
+        {
+          "format": "short",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        }
+      ],
+      "yaxis": {
+        "align": false,
+        "alignLevel": null
+      }
+    },
+    {
+      "aliasColors": {},
+      "bars": false,
+      "dashLength": 10,
+      "dashes": false,
+      "datasource": "Prometheus",
+      "fill": 1,
+      "fillGradient": 0,
+      "gridPos": {
+        "h": 9,
+        "w": 12,
+        "x": 12,
+        "y": 26
+      },
+      "id": 81,
+      "legend": {
+        "alignAsTable": true,
+        "avg": false,
+        "current": true,
+        "hideEmpty": true,
+        "hideZero": true,
+        "max": true,
+        "min": false,
+        "rightSide": true,
+        "show": true,
+        "total": false,
+        "values": true
+      },
+      "lines": true,
+      "linewidth": 1,
+      "links": [],
+      "nullPointMode": "null",
+      "options": {
+        "dataLinks": []
+      },
+      "percentage": false,
+      "pointradius": 5,
+      "points": false,
+      "renderer": "flot",
+      "seriesOverrides": [],
+      "spaceLength": 10,
+      "stack": true,
+      "steppedLine": false,
+      "targets": [
+        {
+          "expr": "flink_taskmanager_Status_JVM_Memory_NonHeap_Used",
+          "format": "time_series",
+          "intervalFactor": 1,
+          "legendFormat": "{{host}} - Used",
+          "refId": "A"
+        },
+        {
+          "expr": "flink_taskmanager_Status_JVM_Memory_NonHeap_Max",
+          "format": "time_series",
+          "intervalFactor": 1,
+          "legendFormat": "{{host}} - Max",
+          "refId": "B"
+        }
+      ],
+      "thresholds": [],
+      "timeFrom": null,
+      "timeRegions": [],
+      "timeShift": null,
+      "title": "Task Managers Non Heap",
+      "tooltip": {
+        "shared": true,
+        "sort": 2,
+        "value_type": "individual"
+      },
+      "type": "graph",
+      "xaxis": {
+        "buckets": null,
+        "mode": "time",
+        "name": null,
+        "show": true,
+        "values": []
+      },
+      "yaxes": [
+        {
+          "format": "decbytes",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": "0",
+          "show": true
+        },
+        {
+          "format": "short",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        }
+      ],
+      "yaxis": {
+        "align": false,
+        "alignLevel": null
+      }
+    },
+    {
+      "aliasColors": {},
+      "bars": false,
+      "dashLength": 10,
+      "dashes": false,
+      "datasource": "Prometheus",
+      "fill": 1,
+      "fillGradient": 0,
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 0,
+        "y": 35
+      },
+      "id": 75,
+      "legend": {
+        "alignAsTable": true,
+        "avg": false,
+        "current": true,
+        "hideEmpty": true,
+        "hideZero": false,
+        "max": false,
+        "min": false,
+        "rightSide": true,
+        "show": true,
+        "total": false,
+        "values": true
+      },
+      "lines": true,
+      "linewidth": 1,
+      "links": [],
+      "nullPointMode": "null",
+      "options": {
+        "dataLinks": []
+      },
       "percentage": true,
       "pointradius": 5,
       "points": false,
@@ -358,34 +837,32 @@
       "steppedLine": false,
       "targets": [
         {
-          "refCount": 0,
-          "refId": "A",
-          "target": "aliasByNode(nextbreakpoint.*-flink.$env.*.*.jobmanager.Flink-Streaming-Job.numberOfInProgressCheckpoints, 3, 7)",
-          "textEditor": false
+          "expr": "flink_jobmanager_job_numberOfFailedCheckpoints",
+          "format": "time_series",
+          "intervalFactor": 1,
+          "legendFormat": "{{job_name}} - Failed",
+          "refId": "A"
         },
         {
-          "refCount": 0,
-          "refId": "C",
-          "target": "aliasByNode(nextbreakpoint.*-flink.$env.*.*.jobmanager.Flink-Streaming-Job.numberOfFailedCheckpoints, 3, 7)",
-          "textEditor": false
+          "expr": "flink_jobmanager_job_numberOfInProgressCheckpoints",
+          "format": "time_series",
+          "intervalFactor": 1,
+          "legendFormat": "{{job_name}} - In progress",
+          "refId": "B"
         },
         {
-          "refCount": 0,
-          "refId": "D",
-          "target": "aliasByNode(nextbreakpoint.*-flink.$env.*.*.jobmanager.Flink-Streaming-Job.numberOfCompletedCheckpoints, 3, 7)",
-          "textEditor": false
-        },
-        {
-          "refCount": 0,
-          "refId": "E",
-          "target": "aliasByNode(nextbreakpoint.*-flink.$env.*.*.jobmanager.Flink-Streaming-Job.totalNumberOfCheckpoints, 3, 7)",
-          "textEditor": false
+          "expr": "flink_jobmanager_job_numberOfCompletedCheckpoints",
+          "format": "time_series",
+          "intervalFactor": 1,
+          "legendFormat": "{{job_name}} - Completed",
+          "refId": "C"
         }
       ],
       "thresholds": [],
       "timeFrom": null,
+      "timeRegions": [],
       "timeShift": null,
-      "title": "Flink Checkpoints Count",
+      "title": "Checkpoints Count",
       "tooltip": {
         "shared": true,
         "sort": 2,
@@ -428,32 +905,36 @@
       "bars": false,
       "dashLength": 10,
       "dashes": false,
-      "datasource": "Graphite",
+      "datasource": "Prometheus",
       "fill": 1,
+      "fillGradient": 0,
       "gridPos": {
         "h": 8,
         "w": 12,
         "x": 12,
-        "y": 28
+        "y": 35
       },
       "id": 78,
       "legend": {
         "alignAsTable": true,
         "avg": false,
-        "current": false,
+        "current": true,
         "hideEmpty": true,
-        "hideZero": true,
+        "hideZero": false,
         "max": false,
         "min": false,
-        "rightSide": false,
+        "rightSide": true,
         "show": true,
         "total": false,
-        "values": false
+        "values": true
       },
       "lines": true,
       "linewidth": 1,
       "links": [],
       "nullPointMode": "null",
+      "options": {
+        "dataLinks": []
+      },
       "percentage": true,
       "pointradius": 5,
       "points": false,
@@ -464,16 +945,18 @@
       "steppedLine": false,
       "targets": [
         {
-          "refCount": 0,
-          "refId": "A",
-          "target": "aliasByNode(nextbreakpoint.*-flink.$env.*.*.jobmanager.Flink-Streaming-Job.fullRestarts, 3, 7)",
-          "textEditor": false
+          "expr": "flink_jobmanager_job_fullRestarts",
+          "format": "time_series",
+          "intervalFactor": 1,
+          "legendFormat": "{{job_name}} - Full Restarts",
+          "refId": "A"
         }
       ],
       "thresholds": [],
       "timeFrom": null,
+      "timeRegions": [],
       "timeShift": null,
-      "title": "Flink Checkpoints Restarts",
+      "title": "Job Restarts",
       "tooltip": {
         "shared": true,
         "sort": 2,
@@ -516,32 +999,36 @@
       "bars": false,
       "dashLength": 10,
       "dashes": false,
-      "datasource": "Graphite",
+      "datasource": "Prometheus",
       "fill": 1,
+      "fillGradient": 0,
       "gridPos": {
         "h": 8,
         "w": 12,
         "x": 0,
-        "y": 36
+        "y": 43
       },
       "id": 76,
       "legend": {
-        "alignAsTable": false,
+        "alignAsTable": true,
         "avg": false,
-        "current": false,
+        "current": true,
         "hideEmpty": true,
-        "hideZero": true,
+        "hideZero": false,
         "max": false,
         "min": false,
-        "rightSide": false,
-        "show": false,
+        "rightSide": true,
+        "show": true,
         "total": false,
-        "values": false
+        "values": true
       },
       "lines": true,
       "linewidth": 1,
       "links": [],
       "nullPointMode": "null",
+      "options": {
+        "dataLinks": []
+      },
       "percentage": true,
       "pointradius": 5,
       "points": false,
@@ -552,16 +1039,18 @@
       "steppedLine": false,
       "targets": [
         {
-          "refCount": 0,
-          "refId": "A",
-          "target": "aliasByNode(nextbreakpoint.*-flink.$env.*.*.jobmanager.Flink-Streaming-Job.lastCheckpointSize, 3, 7)",
-          "textEditor": false
+          "expr": "flink_jobmanager_job_lastCheckpointSize",
+          "format": "time_series",
+          "intervalFactor": 1,
+          "legendFormat": "{{job_name}} - Size",
+          "refId": "A"
         }
       ],
       "thresholds": [],
       "timeFrom": null,
+      "timeRegions": [],
       "timeShift": null,
-      "title": "Flink Checkpoints Size",
+      "title": "Checkpoints Size",
       "tooltip": {
         "shared": true,
         "sort": 2,
@@ -604,32 +1093,36 @@
       "bars": false,
       "dashLength": 10,
       "dashes": false,
-      "datasource": "Graphite",
+      "datasource": "Prometheus",
       "fill": 1,
+      "fillGradient": 0,
       "gridPos": {
         "h": 8,
         "w": 12,
         "x": 12,
-        "y": 36
+        "y": 43
       },
       "id": 77,
       "legend": {
-        "alignAsTable": false,
+        "alignAsTable": true,
         "avg": false,
-        "current": false,
+        "current": true,
         "hideEmpty": true,
-        "hideZero": true,
+        "hideZero": false,
         "max": false,
         "min": false,
-        "rightSide": false,
-        "show": false,
+        "rightSide": true,
+        "show": true,
         "total": false,
-        "values": false
+        "values": true
       },
       "lines": true,
       "linewidth": 1,
       "links": [],
       "nullPointMode": "null",
+      "options": {
+        "dataLinks": []
+      },
       "percentage": true,
       "pointradius": 5,
       "points": false,
@@ -640,16 +1133,18 @@
       "steppedLine": false,
       "targets": [
         {
-          "refCount": 0,
-          "refId": "A",
-          "target": "aliasByNode(nextbreakpoint.*-flink.$env.*.*.jobmanager.Flink-Streaming-Job.lastCheckpointDuration, 3, 7)",
-          "textEditor": false
+          "expr": "flink_jobmanager_job_lastCheckpointDuration",
+          "format": "time_series",
+          "intervalFactor": 1,
+          "legendFormat": "{{job_name}} - Duration",
+          "refId": "A"
         }
       ],
       "thresholds": [],
       "timeFrom": null,
+      "timeRegions": [],
       "timeShift": null,
-      "title": "Flink Checkpoints Duration",
+      "title": "Checkpoints Duration",
       "tooltip": {
         "shared": true,
         "sort": 2,
@@ -692,32 +1187,36 @@
       "bars": false,
       "dashLength": 10,
       "dashes": false,
-      "datasource": "Graphite",
+      "datasource": "Prometheus",
       "fill": 1,
+      "fillGradient": 0,
       "gridPos": {
-        "h": 11,
-        "w": 12,
+        "h": 8,
+        "w": 24,
         "x": 0,
-        "y": 44
+        "y": 51
       },
-      "id": 79,
+      "id": 96,
       "legend": {
-        "alignAsTable": false,
+        "alignAsTable": true,
         "avg": false,
-        "current": false,
+        "current": true,
         "hideEmpty": true,
-        "hideZero": true,
-        "max": false,
+        "hideZero": false,
+        "max": true,
         "min": false,
         "rightSide": false,
-        "show": false,
+        "show": true,
         "total": false,
-        "values": false
+        "values": true
       },
       "lines": true,
       "linewidth": 1,
       "links": [],
       "nullPointMode": "null",
+      "options": {
+        "dataLinks": []
+      },
       "percentage": true,
       "pointradius": 5,
       "points": false,
@@ -728,16 +1227,18 @@
       "steppedLine": false,
       "targets": [
         {
-          "refCount": 0,
-          "refId": "A",
-          "target": "aliasByNode(nextbreakpoint.*-flink.$env.*.*.taskmanager.*.Flink-Streaming-Job.window.*.counter-*.count, 10)",
-          "textEditor": false
+          "expr": "flink_taskmanager_job_task_numRecordsOutPerSecond",
+          "format": "time_series",
+          "intervalFactor": 1,
+          "legendFormat": "{{job_name}} - {{task_name}}",
+          "refId": "A"
         }
       ],
       "thresholds": [],
       "timeFrom": null,
+      "timeRegions": [],
       "timeShift": null,
-      "title": "Metrics",
+      "title": "Task - Records Rate",
       "tooltip": {
         "shared": true,
         "sort": 2,
@@ -754,7 +1255,7 @@
       "yaxes": [
         {
           "decimals": 0,
-          "format": "none",
+          "format": "iops",
           "label": "",
           "logBase": 1,
           "max": null,
@@ -780,32 +1281,36 @@
       "bars": false,
       "dashLength": 10,
       "dashes": false,
-      "datasource": "Graphite",
+      "datasource": "Prometheus",
       "fill": 1,
+      "fillGradient": 0,
       "gridPos": {
-        "h": 11,
-        "w": 12,
-        "x": 12,
-        "y": 44
+        "h": 8,
+        "w": 24,
+        "x": 0,
+        "y": 59
       },
-      "id": 80,
+      "id": 91,
       "legend": {
-        "alignAsTable": false,
+        "alignAsTable": true,
         "avg": false,
-        "current": false,
+        "current": true,
         "hideEmpty": true,
-        "hideZero": true,
-        "max": false,
+        "hideZero": false,
+        "max": true,
         "min": false,
         "rightSide": false,
-        "show": false,
+        "show": true,
         "total": false,
-        "values": false
+        "values": true
       },
       "lines": true,
       "linewidth": 1,
       "links": [],
       "nullPointMode": "null",
+      "options": {
+        "dataLinks": []
+      },
       "percentage": true,
       "pointradius": 5,
       "points": false,
@@ -816,16 +1321,25 @@
       "steppedLine": false,
       "targets": [
         {
-          "refCount": 0,
-          "refId": "B",
-          "target": "aliasByNode(nextbreakpoint.*-flink.$env.*.*.taskmanager.*.Flink-Streaming-Job.window.*.gauge-*, 10)",
-          "textEditor": false
+          "expr": "flink_taskmanager_job_task_operator_outgoing_byte_rate",
+          "format": "time_series",
+          "intervalFactor": 1,
+          "legendFormat": "{{job_name}} - Outgoing - {{task_name}}",
+          "refId": "A"
+        },
+        {
+          "expr": "flink_taskmanager_job_task_operator_incoming_byte_rate",
+          "format": "time_series",
+          "intervalFactor": 1,
+          "legendFormat": "{{job_name}} - Incoming - {{task_name}}",
+          "refId": "B"
         }
       ],
       "thresholds": [],
       "timeFrom": null,
+      "timeRegions": [],
       "timeShift": null,
-      "title": "Metrics",
+      "title": "Task - Bytes Rate",
       "tooltip": {
         "shared": true,
         "sort": 2,
@@ -842,7 +1356,108 @@
       "yaxes": [
         {
           "decimals": 0,
-          "format": "none",
+          "format": "Bps",
+          "label": "",
+          "logBase": 1,
+          "max": null,
+          "min": "0",
+          "show": true
+        },
+        {
+          "format": "short",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": false
+        }
+      ],
+      "yaxis": {
+        "align": false,
+        "alignLevel": null
+      }
+    },
+    {
+      "aliasColors": {},
+      "bars": false,
+      "dashLength": 10,
+      "dashes": false,
+      "datasource": "Prometheus",
+      "fill": 1,
+      "fillGradient": 0,
+      "gridPos": {
+        "h": 8,
+        "w": 24,
+        "x": 0,
+        "y": 67
+      },
+      "id": 93,
+      "legend": {
+        "alignAsTable": true,
+        "avg": false,
+        "current": true,
+        "hideEmpty": true,
+        "hideZero": false,
+        "max": true,
+        "min": false,
+        "rightSide": false,
+        "show": true,
+        "total": false,
+        "values": true
+      },
+      "lines": true,
+      "linewidth": 1,
+      "links": [],
+      "nullPointMode": "null",
+      "options": {
+        "dataLinks": []
+      },
+      "percentage": true,
+      "pointradius": 5,
+      "points": false,
+      "renderer": "flot",
+      "seriesOverrides": [],
+      "spaceLength": 10,
+      "stack": false,
+      "steppedLine": false,
+      "targets": [
+        {
+          "expr": "flink_taskmanager_job_task_Shuffle_Netty_Output_numBytesInLocalPerSecond",
+          "format": "time_series",
+          "intervalFactor": 1,
+          "legendFormat": "{{job_name}} - Local - {{task_name}}",
+          "refId": "A"
+        },
+        {
+          "expr": "flink_taskmanager_job_task_Shuffle_Netty_Output_numBytesInRemotePerSecond",
+          "format": "time_series",
+          "intervalFactor": 1,
+          "legendFormat": "{{job_name}} - Remote - {{task_name}}",
+          "refId": "B"
+        }
+      ],
+      "thresholds": [],
+      "timeFrom": null,
+      "timeRegions": [],
+      "timeShift": null,
+      "title": "Shuffle - Output",
+      "tooltip": {
+        "shared": true,
+        "sort": 2,
+        "value_type": "individual"
+      },
+      "type": "graph",
+      "xaxis": {
+        "buckets": null,
+        "mode": "time",
+        "name": null,
+        "show": true,
+        "values": []
+      },
+      "yaxes": [
+        {
+          "decimals": 0,
+          "format": "Bps",
           "label": "",
           "logBase": 1,
           "max": null,
@@ -864,40 +1479,15 @@
       }
     }
   ],
-  "refresh": "5m",
-  "schemaVersion": 16,
+  "refresh": "30s",
+  "schemaVersion": 20,
   "style": "dark",
-  "tags": [
-    "nextbreakpoint"
-  ],
+  "tags": [],
   "templating": {
-    "list": [
-      {
-        "allValue": null,
-        "current": {
-          "selected": true,
-          "text": "demo",
-          "value": "demo"
-        },
-        "hide": 0,
-        "includeAll": false,
-        "label": null,
-        "multi": false,
-        "name": "env",
-        "options": [
-          {
-            "selected": false,
-            "text": "demo",
-            "value": "demo"
-          }
-        ],
-        "query": "demo",
-        "type": "custom"
-      }
-    ]
+    "list": []
   },
   "time": {
-    "from": "now-30m",
+    "from": "now-5m",
     "to": "now"
   },
   "timepicker": {
@@ -926,7 +1516,7 @@
     ]
   },
   "timezone": "",
-  "title": "Flink monitoring",
-  "uid": "9C5xPC4iz",
+  "title": "Flink Dashboard",
+  "uid": "ppRtPTdWk",
   "version": 1
 }
