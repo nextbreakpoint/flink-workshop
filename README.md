@@ -60,19 +60,19 @@ Start Docker containers with command:
 
 Start Flink jobs with command:
 
-    ./start_jobs.sh
+    ./jobs-run.sh
 
 ## Cancel Flink jobs (with savepoint)
 
 Cancel Flink jobs with command:
 
-    ./cancel_jobs.sh
+    ./jobs-cancel.sh
 
 ## Stop Flink jobs (when finished)
 
 Stop Flink jobs with command:
 
-    ./stop_jobs.sh
+    ./jobs-stop.sh
 
 ## Stop containers (when finished)
 
@@ -82,8 +82,8 @@ Stop Docker containers with command:
 
 ## Monitor Flink jobs
 
-Access Grafana dashboard at http://localhost:3000 (user: admin, password: admin)
+Access Grafana dashboard at http://localhost:33000 (user: admin, password: admin)
 
-Access Prometheus at http://localhost:9090
+Access Prometheus at http://localhost:39090
 
-Access Flink UI at http://localhost:8081
+Access Flink UI at http://localhost:48081

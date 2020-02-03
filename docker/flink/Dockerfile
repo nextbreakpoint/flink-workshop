@@ -1,27 +1,24 @@
 ARG flink_version
-ARG scala_version
 
-FROM flink:${flink_version}-scala_${scala_version}
+FROM flink:${flink_version}
 
 ARG flink_version
-ARG scala_version
 
 ENV FLINK_VERSION $flink_version
-ENV SCALA_VERSION $scala_version
+
+RUN cp $FLINK_HOME/opt/flink-s3-fs-hadoop-${FLINK_VERSION}.jar $FLINK_HOME/lib/flink-s3-fs-hadoop-${FLINK_VERSION}.jar
+#RUN cp $FLINK_HOME/opt/flink-s3-fs-presto-${FLINK_VERSION}.jar $FLINK_HOME/lib/flink-s3-fs-presto-${FLINK_VERSION}.jar
+RUN cp $FLINK_HOME/opt/flink-metrics-graphite-${FLINK_VERSION}.jar $FLINK_HOME/lib/flink-metrics-graphite-${FLINK_VERSION}.jar
+RUN cp $FLINK_HOME/opt/flink-metrics-prometheus-${FLINK_VERSION}.jar $FLINK_HOME/lib/flink-metrics-prometheus-${FLINK_VERSION}.jar
+
+COPY wait-for-it.sh /wait-for-it.sh
+COPY docker-entrypoint.sh /docker-entrypoint.sh
+COPY flink-conf.yaml /opt/flink/conf/flink-conf.yaml
 
 USER root
 
-RUN apt-get update -y && apt install -y wget
+RUN chown flink.flink /wait-for-it.sh && chmod u+x /wait-for-it.sh
+RUN chown flink.flink /docker-entrypoint.sh && chmod u+x /docker-entrypoint.sh
+RUN chown flink.flink /opt/flink/conf/flink-conf.yaml && chmod u+rw /opt/flink/conf/flink-conf.yaml
 
-RUN wget --max-redirect=2 -O $FLINK_HOME/lib/flink-metrics-prometheus_${SCALA_VERSION}-${FLINK_VERSION}.jar https://repo1.maven.org/maven2/org/apache/flink/flink-metrics-prometheus_${SCALA_VERSION}/${FLINK_VERSION}/flink-metrics-prometheus_${SCALA_VERSION}-${FLINK_VERSION}.jar
-
-RUN chown -R flink.flink $FLINK_HOME/lib
-
-COPY docker-entrypoint.sh /docker-entrypoint.sh
-
-RUN chmod a+x /docker-entrypoint.sh
-
-COPY flink-conf.yaml /opt/flink/conf/flink-conf.yaml
-
-RUN chmod a+w /opt/flink/conf/flink-conf.yaml
-
+USER flink

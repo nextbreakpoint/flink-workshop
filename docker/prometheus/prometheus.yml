@@ -30,8 +30,8 @@ scrape_configs:
 
   - job_name: 'jobmanager'
     static_configs:
-      - targets: ['jobmanager:9990']
+      - targets: ['jobmanager:9090']
 
   - job_name: 'taskmanager'
     static_configs:
-      - targets: ['taskmanager1:9990','taskmanager2:9990']
+      - targets: ['taskmanager1:9090','taskmanager2:9090']

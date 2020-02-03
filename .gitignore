@@ -2,4 +2,3 @@
 dependency-reduced-pom.xml
 *.iml
 target
-docker-compose.yaml
