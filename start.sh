@@ -1,5 +1,3 @@
 #!/bin/sh
 
-pushd docker
-./start_containers.sh
-popd
+docker-compose up -d

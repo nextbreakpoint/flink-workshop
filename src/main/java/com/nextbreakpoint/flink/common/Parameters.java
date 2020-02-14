@@ -7,8 +7,7 @@ import org.slf4j.LoggerFactory;
 public class Parameters {
     private static final Logger log = LoggerFactory.getLogger(Parameters.class);
 
-    private Parameters() {
-    }
+    private Parameters() {}
 
     public static String getRequiredParam(ParameterTool parameters, String paramName) {
         String param = parameters.get(paramName, System.getProperty(paramName, System.getenv(paramName)));
