@@ -10,17 +10,12 @@ import org.apache.flink.util.Collector;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.time.Instant;
-import java.time.LocalDateTime;
-import java.time.ZoneId;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
-import static java.time.format.DateTimeFormatter.ISO_DATE_TIME;
-
-public class SensorRichWindowFunction extends RichWindowFunction<SensorEvent, MaxTemperatureEvent, String, TimeWindow> {
-    private static final Logger log = LoggerFactory.getLogger(SensorRichWindowFunction.class);
+public class MaxTemperatureWindowFunction extends RichWindowFunction<MaxTemperatureEvent, MaxTemperatureEvent, String, TimeWindow> {
+    private static final Logger log = LoggerFactory.getLogger(MaxTemperatureWindowFunction.class);
 
     private transient Map<String, Counter> counters = new HashMap<>();
     private transient Map<String, DoubleGauge> gauges = new HashMap<>();
@@ -32,9 +27,9 @@ public class SensorRichWindowFunction extends RichWindowFunction<SensorEvent, Ma
     }
 
     @Override
-    public void apply(String sensorId, TimeWindow window, Iterable<SensorEvent> input, Collector<MaxTemperatureEvent> out) {
-        final String countMetricName = "sensor." + sensorId + ".count";
-        final String valueMetricName = "sensor." + sensorId + ".value";
+    public void apply(String key, TimeWindow window, Iterable<MaxTemperatureEvent> input, Collector<MaxTemperatureEvent> out) {
+        final String countMetricName = "sensor." + key + ".count";
+        final String valueMetricName = "sensor." + key + ".temperature";
         final MetricGroup metricGroup = getRuntimeContext().getMetricGroup();
         final Counter counter = counters.computeIfAbsent(countMetricName, name -> {
             final Counter metric = metricGroup.counter(name);
@@ -48,11 +43,11 @@ public class SensorRichWindowFunction extends RichWindowFunction<SensorEvent, Ma
             log.info("Created metric " + gaugeMetric);
             return metric;
         });
-        final Iterator<SensorEvent> iterator = input.iterator();
+        final Iterator<MaxTemperatureEvent> iterator = input.iterator();
         iterator.forEachRemaining(event -> {
             counter.inc();
-            gauge.setValue(event.getTemperature());
-            out.collect(new MaxTemperatureEvent(sensorId, event.getTemperature(), ISO_DATE_TIME.format(LocalDateTime.ofInstant(Instant.ofEpochMilli(window.maxTimestamp()), ZoneId.of("UTC")))));
+            gauge.setValue(Double.valueOf(event.getTemperature()));
+            out.collect(event);
         });
     }
 }

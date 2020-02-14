@@ -1,0 +1,38 @@
+{
+  "namespace": "com.nextbreakpoint.flink.sensor",
+  "type": "record",
+  "name": "SensorEvent",
+  "fields": [
+    {
+      "name": "eventId",
+      "type": "string",
+      "avro.java.string": "String"
+    },
+    {
+      "name": "sensorId",
+      "type": "string",
+      "avro.java.string": "String"
+    },
+    {
+      "name": "model",
+      "type": "string",
+      "avro.java.string": "String"
+    },
+    {
+      "name": "latitude",
+      "type": "float"
+    },
+    {
+      "name": "longitude",
+      "type": "float"
+    },
+    {
+      "name": "temperature",
+      "type": "int"
+    },
+    {
+      "name": "timestamp",
+      "type": "long"
+    }
+  ]
+}

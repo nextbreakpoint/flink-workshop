@@ -13,23 +13,22 @@ import java.util.UUID;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
-public class RandomSensorDataSource implements ParallelSourceFunction<SensorData> {
+public class RandomSensorDataSource implements ParallelSourceFunction<SensorEvent> {
     private volatile boolean running;
 
     @Override
-    public void run(SourceContext<SensorData> sourceContext) {
+    public void run(SourceContext<SensorEvent> sourceContext) {
         running = true;
-        final List<Tuple2<Double, UUID>> sensors = IntStream.range(0, 10)
-                .mapToObj(i -> new Tuple2<>(Math.random() * 100, UUID.randomUUID())).collect(Collectors.toList());
+        final List<Tuple2<Double, UUID>> tuples = IntStream.range(0, 10)
+                .mapToObj(i -> new Tuple2<>(Math.random() * 100, UUID.randomUUID()))
+                .collect(Collectors.toList());
 
         while (running) {
             final long timestamp = System.currentTimeMillis();
 
-            final List<SensorData> messages = sensors.stream()
-                    .map(tuple -> createSensorData(tuple.f1.toString(), nextRandomValue(tuple.f0, timestamp), timestamp))
-                    .collect(Collectors.toList());
-
-            messages.forEach(message -> sourceContext.collectWithTimestamp(message, timestamp));
+            tuples.stream()
+                .map(tuple -> createSensorEvent(timestamp, tuple))
+                .forEach(message -> sourceContext.collectWithTimestamp(message, timestamp));
 
             sourceContext.emitWatermark(new Watermark(timestamp));
 
@@ -48,11 +47,20 @@ public class RandomSensorDataSource implements ParallelSourceFunction<SensorData
         running = false;
     }
 
+    private SensorEvent createSensorEvent(long timestamp, Tuple2<Double, UUID> tuple) {
+        return new SensorEvent(
+                UUID.randomUUID().toString(),
+                tuple.f1.toString(),
+                nextRandomValue(tuple.f0, timestamp),
+                formatTimestamp(timestamp)
+        );
+    }
+
     private double nextRandomValue(Double offset, long timestamp) {
         return Math.sin(2 * Math.PI * (timestamp / 1000.0)) * offset / 10.0 + (Math.random() * offset / 20.0) + offset;
     }
 
-    private SensorData createSensorData(String id, double value, long timestamp) {
-        return new SensorData(id, value, LocalDateTime.ofInstant(Instant.ofEpochMilli(timestamp), ZoneId.of("UTC")).format(DateTimeFormatter.ISO_LOCAL_DATE_TIME));
+    private String formatTimestamp(long timestamp) {
+        return LocalDateTime.ofInstant(Instant.ofEpochMilli(timestamp), ZoneId.of("UTC")).format(DateTimeFormatter.ISO_LOCAL_DATE_TIME);
     }
 }
