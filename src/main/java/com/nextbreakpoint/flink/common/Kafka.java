@@ -20,8 +20,8 @@ public class Kafka {
         final String retries = config.getOrDefault("kafka_retries", "2");
         final String securityProtocol = config.getOrDefault("kafka_security_protocol", "PLAINTEXT");
 
-        final String confluentApiKey = config.get("kafka_confluent_api_key");
-        final String confluentSecret = config.get("kafka_confluent_secret");
+        final String kafkaSaslUsername = config.get("kafka_sasl_username");
+        final String kafkaSaslPassword = config.get("kafka_sasl_password");
 
         final Properties properties = new Properties();
         properties.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapServers);
@@ -33,11 +33,11 @@ public class Kafka {
         properties.put(ProducerConfig.BUFFER_MEMORY_CONFIG, 33554432);
         properties.put(ProducerConfig.TRANSACTION_TIMEOUT_CONFIG, 60000);
 
-        if (confluentApiKey != null && confluentSecret != null) {
+        if (kafkaSaslUsername != null && kafkaSaslPassword != null) {
             properties.put(SaslConfigs.SASL_MECHANISM, PlainSaslServer.PLAIN_MECHANISM);
             properties.put(SslConfigs.SSL_ENDPOINT_IDENTIFICATION_ALGORITHM_CONFIG, "https");
             properties.put(CommonClientConfigs.SECURITY_PROTOCOL_CONFIG, securityProtocol);
-            properties.put(SaslConfigs.SASL_JAAS_CONFIG, getJaasConfig(confluentApiKey, confluentSecret));
+            properties.put(SaslConfigs.SASL_JAAS_CONFIG, getJaasConfig(kafkaSaslUsername, kafkaSaslPassword));
         }
 
         return properties;
@@ -51,8 +51,8 @@ public class Kafka {
         final String securityProtocol = config.getOrDefault("kafka_security_protocol", "PLAINTEXT");
         final String isolationLevel = config.getOrDefault("kafka_isolation_level", "read_committed");
 
-        final String confluentApiKey = config.get("kafka_confluent_api_key");
-        final String confluentSecret = config.get("kafka_confluent_secret");
+        final String kafkaSaslUsername = config.get("kafka_sasl_username");
+        final String kafkaSaslPassword = config.get("kafka_sasl_password");
 
         final Properties properties = new Properties();
         properties.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapServers);
@@ -61,11 +61,11 @@ public class Kafka {
         properties.put(ConsumerConfig.ENABLE_AUTO_COMMIT_CONFIG, enableAutoCommit);
         properties.put(ConsumerConfig.ISOLATION_LEVEL_CONFIG, isolationLevel);
 
-        if (confluentApiKey != null && confluentSecret != null) {
+        if (kafkaSaslUsername != null && kafkaSaslPassword != null) {
             properties.put(SaslConfigs.SASL_MECHANISM, PlainSaslServer.PLAIN_MECHANISM);
             properties.put(SslConfigs.SSL_ENDPOINT_IDENTIFICATION_ALGORITHM_CONFIG, "https");
             properties.put(CommonClientConfigs.SECURITY_PROTOCOL_CONFIG, securityProtocol);
-            properties.put(SaslConfigs.SASL_JAAS_CONFIG, getJaasConfig(confluentApiKey, confluentSecret));
+            properties.put(SaslConfigs.SASL_JAAS_CONFIG, getJaasConfig(kafkaSaslUsername, kafkaSaslPassword));
         }
 
         return properties;
@@ -94,8 +94,8 @@ public class Kafka {
         return properties;
     }
 
-    private static String getJaasConfig(String confluentApiKey, String confluentSecret) {
-        return String.format("org.apache.kafka.common.security.plain.PlainLoginModule required username=\"%s\" password=\"%s\" ;", confluentApiKey, confluentSecret);
+    private static String getJaasConfig(String username, String password) {
+        return String.format("org.apache.kafka.common.security.plain.PlainLoginModule required username=\"%s\" password=\"%s\" ;", username, password);
     }
 
 //    consumerConfig.put(CommonClientConfigs.SECURITY_PROTOCOL_CONFIG, "SSL");

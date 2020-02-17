@@ -13,11 +13,10 @@ services:
       - /tmp:/tmp
     ports:
       - target: 8081
-        published: 48081
+        published: 8081
         protocol: tcp
         mode: ingress
       - target: 9090
-        published: 49090
         protocol: tcp
         mode: ingress
     networks:
@@ -44,7 +43,6 @@ services:
       - /tmp:/tmp
     ports:
       - target: 9090
-        published: 49091
         protocol: tcp
         mode: ingress
   taskmanager2:
@@ -69,11 +67,10 @@ services:
       - /tmp:/tmp
     ports:
       - target: 9090
-        published: 49092
         protocol: tcp
         mode: ingress
   kafka:
-    image: workshop/cp-kafka:5.3.1
+    image: workshop/cp-kafka:5.4.0
     entrypoint:
         - /etc/confluent/docker/run
     networks:
@@ -99,33 +96,30 @@ services:
       - kafka-data:/data/kafka-logs
     ports:
       - target: 9092
-        published: 39092
         protocol: tcp
         mode: ingress
       - target: 9093
-        published: 39093
+        published: 9093
         protocol: tcp
         mode: ingress
       - target: 7070
-        published: 37071
         protocol: tcp
         mode: ingress
   schema-registry:
-    image: workshop/cp-schema-registry:5.3.1
+    image: workshop/cp-schema-registry:5.4.0
     networks:
       - workshop
     environment:
       SCHEMA_REGISTRY_HOST_NAME: "schema-registry"
       SCHEMA_REGISTRY_LISTENERS: "http://schema-registry:8082"
       SCHEMA_REGISTRY_KAFKASTORE_CONNECTION_URL: "zookeeper:2181"
+      SCHEMA_REGISTRY_HEAP_OPTS: "-Xmx800M -Xms800M"
       SCHEMA_REGISTRY_OPTS: "-javaagent:/opt/jmx-exporter/jmx-exporter.jar=7070:/etc/jmx-exporter/config.yml"
     ports:
       - target: 8082
-        published: 38082
         protocol: tcp
         mode: ingress
       - target: 7070
-        published: 37073
         protocol: tcp
         mode: ingress
   zookeeper:
@@ -134,18 +128,16 @@ services:
       - workshop
     environment:
       ZOO_MY_ID: 1
-      SERVER_JVMFLAGS: "-javaagent:/opt/jmx-exporter/jmx-exporter.jar=7070:/etc/jmx-exporter/config.yml"
+      SERVER_JVMFLAGS: "-Xmx512M -javaagent:/opt/jmx-exporter/jmx-exporter.jar=7070:/etc/jmx-exporter/config.yml"
       #SERVER_JVMFLAGS: "-javaagent:/opt/jmx-exporter/jmx-exporter.jar=7070:/etc/jmx-exporter/config.yml -Djava.rmi.server.hostname=localhost -Dcom.sun.management.jmxremote=true -Dcom.sun.management.jmxremote.port=9010 -Dcom.sun.management.jmxremote.rmi.port=9010 -Dcom.sun.management.jmxremote.local.only=false -Dcom.sun.management.jmxremote.authenticate=false -Dcom.sun.management.jmxremote.ssl=false"
     volumes:
       - zookeeper-data:/data
       - zookeeper-datalog:/datalog
     ports:
       - target: 2181
-        published: 32181
         protocol: tcp
         mode: ingress
       - target: 7070
-        published: 37072
         protocol: tcp
         mode: ingress
   grafana:
@@ -158,7 +150,7 @@ services:
       - GF_USERS_ALLOW_SIGN_UP=false
     ports:
       - target: 3000
-        published: 33000
+        published: 3000
         protocol: tcp
         mode: ingress
     volumes:
@@ -173,7 +165,7 @@ services:
       - prometheus-data:/prometheus
     ports:
       - target: 9090
-        published: 39090
+        published: 9090
         protocol: tcp
         mode: ingress
 volumes:

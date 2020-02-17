@@ -29,7 +29,7 @@ public class GenerateJob {
         final int parallelism = Integer.parseInt(getOptionalParam(parameters, PARALLELISM, "0"));
         final boolean consoleOutput = Boolean.parseBoolean(getOptionalParam(parameters, CONSOLE_OUTPUT, "false"));
         final String bootstrapServers = getOptionalParam(parameters, BOOTSTRAP_SERVERS, "localhost:9093");
-        final String outputTopicName = getOptionalParam(parameters, OUTPUT_TOPIC_NAME, "max-temperature-events");
+        final String outputTopicName = getOptionalParam(parameters, OUTPUT_TOPIC_NAME, "sensor-events");
         final String producerClientId = getOptionalParam(parameters, PRODUCER_CLIENT_ID, "sensor-event-generate-job");
 
         final StreamExecutionEnvironment environment = Environment.getStreamExecutionEnvironment(localEnvironment, enabledWebui, restPort);
