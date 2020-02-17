@@ -82,8 +82,8 @@ Stop Docker containers with command:
 
 ## Monitor Flink jobs
 
-Access Grafana dashboard at http://localhost:33000 (user: admin, password: admin)
+Access Grafana dashboard at http://localhost:3000 (user: admin, password: admin)
 
-Access Prometheus at http://localhost:39090
+Access Prometheus at http://localhost:9090
 
-Access Flink UI at http://localhost:48081
+Access Flink UI at http://localhost:8081
