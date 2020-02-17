@@ -43,16 +43,6 @@ public class ReportJob {
 
         final CsvBatchTableSourceFactory sourceFactory = new CsvBatchTableSourceFactory();
 
-//        final Schema schema = new Schema()
-//                .field("eventId", "STRING")
-//                .field("sensorId", "STRING")
-//                .field("temperature", "INT")
-//                .field("timestamp", "LONG");
-//
-//        tableEnv.connect(new FileSystem().path(outputBucketName))
-//                .withFormat(new Csv().fieldDelimiter(',').deriveSchema())
-//                .withSchema(schema);
-//
         final Map<String, String> sourceProperties = new HashMap<>();
         sourceProperties.put("format.record-class", SensorEvent.class.getName());
         sourceProperties.put("connector.path", sourceBucketName);
