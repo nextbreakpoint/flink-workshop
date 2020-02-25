@@ -1,6 +1,6 @@
 package com.nextbreakpoint.flink.jobs.batch;
 
-import com.nextbreakpoint.flink.common.*;
+import com.nextbreakpoint.flink.common.Environment;
 import com.nextbreakpoint.flink.sensor.SensorEvent;
 import org.apache.flink.api.common.restartstrategy.RestartStrategies;
 import org.apache.flink.api.java.ExecutionEnvironment;
@@ -28,8 +28,8 @@ public class ReportJob {
         final boolean enabledWebui = Boolean.parseBoolean(getOptionalParam(parameters, ENABLE_WEBUI, "false"));
         final int restPort = Integer.parseInt(getOptionalParam(parameters, REST_PORT, "8081"));
         final int parallelism = Integer.parseInt(getOptionalParam(parameters, PARALLELISM, "0"));
-        final String sourceBucketName = getOptionalParam(parameters, SOURCE_BUCKET_NAME, "file:///tmp/flink/sensor-events/csv");
-        final String outputBucketName = getOptionalParam(parameters, OUTPUT_BUCKET_NAME, "file:///tmp/flink/high-temperature-sensor-events/csv");
+        final String sourceBucketName = getOptionalParam(parameters, SOURCE_BUCKET_NAME, "file:///tmp/flink/sensor-events/source");
+        final String outputBucketName = getOptionalParam(parameters, OUTPUT_BUCKET_NAME, "file:///tmp/flink/sensor-events/report");
 
         final ExecutionEnvironment environment = Environment.getExecutionEnvironment(localEnvironment, enabledWebui, restPort);
 
@@ -90,7 +90,7 @@ public class ReportJob {
         final TableSink<Row> sink = sinkFactory.createTableSink(sinkProperties);
         tableEnv.registerTableSink("high_temperature_sensor_events", sink);
 
-        final Table result = tableEnv.sqlQuery("SELECT eventId, sensorId, temperature, `timestamp` FROM sensor_events WHERE temperature > 10");
+        final Table result = tableEnv.sqlQuery("SELECT eventId, sensorId, temperature, `timestamp` FROM sensor_events WHERE temperature > 30");
 
         result.insertInto("high_temperature_sensor_events");
 

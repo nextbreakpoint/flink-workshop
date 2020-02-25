@@ -1,6 +1,9 @@
 package com.nextbreakpoint.flink.jobs.stream;
 
-import com.nextbreakpoint.flink.common.*;
+import com.nextbreakpoint.flink.common.Environment;
+import com.nextbreakpoint.flink.common.Kafka;
+import com.nextbreakpoint.flink.common.Sinks;
+import com.nextbreakpoint.flink.common.Sources;
 import com.nextbreakpoint.flink.sensor.*;
 import org.apache.flink.api.common.restartstrategy.RestartStrategies;
 import org.apache.flink.api.java.utils.ParameterTool;
