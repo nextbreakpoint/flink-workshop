@@ -33,10 +33,10 @@ public class AggregateJob {
         final int parallelism = Integer.parseInt(getOptionalParam(parameters, PARALLELISM, "0"));
         final boolean consoleOutput = Boolean.parseBoolean(getOptionalParam(parameters, CONSOLE_OUTPUT, "false"));
         final String bootstrapServers = getOptionalParam(parameters, BOOTSTRAP_SERVERS, "localhost:9093");
-        final String sourceTopicName = getOptionalParam(parameters, SOURCE_TOPIC_NAME, "sensor-events");
-        final String outputTopicName = getOptionalParam(parameters, OUTPUT_TOPIC_NAME, "max-temperature-events");
-        final String consumerGroupName = getOptionalParam(parameters, CONSUMER_GROUP_NAME, "sensor-event-aggregate-job");
-        final String producerClientId = getOptionalParam(parameters, PRODUCER_CLIENT_ID, "sensor-event-aggregate-job");
+        final String sourceTopicName = getOptionalParam(parameters, SOURCE_TOPIC_NAME, "workshop-sensor-events");
+        final String outputTopicName = getOptionalParam(parameters, OUTPUT_TOPIC_NAME, "workshop-max-temperature-events");
+        final String consumerGroupName = getOptionalParam(parameters, CONSUMER_GROUP_NAME, "workshop-aggregate-job");
+        final String producerClientId = getOptionalParam(parameters, PRODUCER_CLIENT_ID, "workshop-aggregate-job");
         final String autoOffsetReset = getOptionalParam(parameters, AUTO_OFFSET_RESET, "earliest");
 
         final StreamExecutionEnvironment environment = Environment.getStreamExecutionEnvironment(localEnvironment, enabledWebui, restPort);
@@ -83,6 +83,6 @@ public class AggregateJob {
                     .name("console");
         }
 
-        environment.execute("sensor-event-aggregate-job");
+        environment.execute("workshop-aggregate-job");
     }
 }

@@ -34,12 +34,12 @@ public class TestJob {
         environment.enableCheckpointing(60000);
 
         environment.addSource(new RandomSensorDataSource())
-                .uid("source")
+                .uid("fake-source")
                 .name("source")
                 .addSink(new PrintSinkFunction<>("event", false))
                 .uid("console-sink")
                 .name("console");
 
-        environment.execute("Test data from sensors");
+        environment.execute("workshop-test-job");
     }
 }

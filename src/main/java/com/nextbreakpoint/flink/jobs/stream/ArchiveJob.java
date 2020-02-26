@@ -33,9 +33,9 @@ public class ArchiveJob {
         final int restPort = Integer.parseInt(getOptionalParam(parameters, REST_PORT, "8081"));
         final int parallelism = Integer.parseInt(getOptionalParam(parameters, PARALLELISM, "0"));
         final String bootstrapServers = getOptionalParam(parameters, BOOTSTRAP_SERVERS, "localhost:9093");
-        final String sourceTopicName = getOptionalParam(parameters, SOURCE_TOPIC_NAME, "sensor-events");
-        final String outputBucketName = getOptionalParam(parameters, OUTPUT_BUCKET_NAME, "file:///tmp/flink/sensor-events/source");
-        final String consumerGroupName = getOptionalParam(parameters, CONSUMER_GROUP_NAME, "sensor-event-archive-job");
+        final String sourceTopicName = getOptionalParam(parameters, SOURCE_TOPIC_NAME, "workshop-sensor-events");
+        final String outputFsPath = getOptionalParam(parameters, OUTPUT_FS_PATH, "file:///tmp/workshop/sensor-events");
+        final String consumerGroupName = getOptionalParam(parameters, CONSUMER_GROUP_NAME, "workshop-archive-job");
         final String autoOffsetReset = getOptionalParam(parameters, AUTO_OFFSET_RESET, "earliest");
         final boolean consoleOutput = Boolean.parseBoolean(getOptionalParam(parameters, CONSOLE_OUTPUT, "false"));
 
@@ -60,10 +60,10 @@ public class ArchiveJob {
                 .uid("kafka-source")
                 .name("kafka")
                 .map(new SensorEventToStringFunctiom())
-                .uid("csv")
+                .uid("csv-map")
                 .name("csv");
 
-        pipeline.addSink(Sinks.createTextFileSink(new Path(outputBucketName), 60000));
+        pipeline.addSink(Sinks.createTextFileSink(new Path(outputFsPath), 60000));
 
         if (consoleOutput) {
             pipeline.addSink(new PrintSinkFunction<>("event", false))
@@ -71,6 +71,6 @@ public class ArchiveJob {
                     .name("console");
         }
 
-        environment.execute("sensor-event-archive-job");
+        environment.execute("workshop-archive-job");
     }
 }

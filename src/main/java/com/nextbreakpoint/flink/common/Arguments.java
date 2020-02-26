@@ -4,8 +4,8 @@ public class Arguments {
     public static final String BOOTSTRAP_SERVERS = "BOOTSTRAP_SERVERS";
     public static final String SOURCE_TOPIC_NAME = "SOURCE_TOPIC_NAME";
     public static final String OUTPUT_TOPIC_NAME = "OUTPUT_TOPIC_NAME";
-    public static final String OUTPUT_BUCKET_NAME = "OUTPUT_BUCKET_NAME";
-    public static final String SOURCE_BUCKET_NAME = "SOURCE_BUCKET_NAME";
+    public static final String OUTPUT_FS_PATH = "OUTPUT_FS_PATH";
+    public static final String SOURCE_FS_PATH = "SOURCE_FS_PATH";
     public static final String CONSUMER_GROUP_NAME = "CONSUMER_GROUP_NAME";
     public static final String PRODUCER_CLIENT_ID = "PRODUCER_CLIENT_ID";
     public static final String AUTO_OFFSET_RESET = "AUTO_OFFSET_RESET";

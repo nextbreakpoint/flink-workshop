@@ -5,7 +5,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.nextbreakpoint</groupId>
     <artifactId>com.nextbreakpoint.flinkworkshop</artifactId>
-    <version>1.2.2</version>
+    <version>1.2.3</version>
     <description>Example of Flink jobs for workshop</description>
     <name>com.nextbreakpoint.flinkworkshop</name>
     <packaging>jar</packaging>
