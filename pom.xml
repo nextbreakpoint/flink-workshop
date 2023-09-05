@@ -39,7 +39,7 @@
         <slf4j.version>1.7.28</slf4j.version>
         <joda-time.version>2.10.5</joda-time.version>
         <confluent-kafka.version>5.4.0</confluent-kafka.version>
-        <kafka-clients.version>2.4.0</kafka-clients.version>
+        <kafka-clients.version>2.6.3</kafka-clients.version>
         <junit-jupiter.version>5.5.2</junit-jupiter.version>
         <assertj-core.version>3.13.2</assertj-core.version>
         <mockito.version>3.1.0</mockito.version>
